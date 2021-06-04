@@ -10,8 +10,35 @@ const styles = StyleSheet.create({
     },
     container: {
         width: '100%',
-        height: Dimensions.get('window').height
-    }
+        height: Dimensions.get('window').height,
+    },
+    uiContainer: {
+        height: '100%',
+        justifyContent: 'flex-end',
+    },
+    infoContainer: {
+        justifyContent: 'flex-end',
+    },
+    actionsContainer: {
+        justifyContent: 'flex-end',
+    },
+    handle: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+    infoContainer: {
+
+    },
+    description: {
+
+    },
+    audioInfo: {
+
+    },
+    audio: {
+
+    },
 });
 
 export default styles;
