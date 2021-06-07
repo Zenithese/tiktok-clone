@@ -1,47 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import styles from './styles';
-import { View, Text, TouchableWithoutFeedback, Image, Animated, Easing } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
 import Video from 'react-native-video';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import SpinningAudioTrackImageThatLooksLikeARecord from './SpinningAudioTrackImageThatLooksLikeARecord'
 
 const Post = ({ post }) => {
 
     const [paused, setPaused] = useState(false)
-    const [rotateNum, setRotateNum] = useState(0)
-
-    const RecordSpinImage = () => {
-        const spinAnim = useRef(new Animated.Value(0)).current
-
-        const spin = spinAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '360deg']
-        })
-
-        useEffect(() => {
-            Animated.timing(
-                spinAnim,
-                {
-                    toValue: 1,
-                    duration: 5000,
-                    easing: Easing.linear,
-                    useNativeDriver: true,
-                }
-            ).start();
-        }, [spinAnim])
-
-        return (
-            <Animated.Image
-                style={[styles.audioImage, {
-                    transform: [{ rotate: spin }],
-                    // opacity: spinAnim,
-                }]}
-                source={{ uri: post.audioImage }}
-            >
-            </Animated.Image>
-        );
-    }
 
     const onPress = () => {
         setPaused(!paused);
@@ -55,7 +23,7 @@ const Post = ({ post }) => {
                         source={{
                             uri: post.videoUri,
                         }}
-                        style={styles.video}
+                        style={[styles.video, { backgroundColor: 'darkblue'}]}
                         resizeMode={'cover'}
                         onError={(e: LoadError) => console.log(e)}
                         // repeat={true}
@@ -95,11 +63,7 @@ const Post = ({ post }) => {
                                 </View>
                             </View>
 
-                            
-
-                            <RecordSpinImage>
-                                
-                            </RecordSpinImage>
+                            <SpinningAudioTrackImageThatLooksLikeARecord uri={post.audioImage} />
                         </View>
                     </View>
                 </View>
