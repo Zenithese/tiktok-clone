@@ -22,10 +22,7 @@ const App = () => {
 
   return (
     <View style={styles.appContainer}>
-      <StatusBar />
-      <ScrollView>
-        <Home />
-      </ScrollView>
+      <Home />
     </View>
   );
 };

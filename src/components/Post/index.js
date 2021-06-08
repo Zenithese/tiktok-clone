@@ -9,7 +9,7 @@ import SpinningAudioTrackImageThatLooksLikeARecord from './SpinningAudioTrackIma
 
 const Post = ({ post }) => {
 
-    const [paused, setPaused] = useState(false)
+    const [paused, setPaused] = useState(true)
 
     const onPress = () => {
         setPaused(!paused);
@@ -25,7 +25,7 @@ const Post = ({ post }) => {
                         }}
                         style={[styles.video, { backgroundColor: 'darkblue'}]}
                         resizeMode={'cover'}
-                        onError={(e: LoadError) => console.log(e)}
+                        // onError={(e: LoadError) => console.log(e)}
                         // repeat={true}
                         paused={paused}
                     />
