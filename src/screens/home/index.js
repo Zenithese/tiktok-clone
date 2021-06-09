@@ -4,11 +4,13 @@ import {View, FlatList, Dimensions} from 'react-native';
 import { RecyclerListView, DataProvider, LayoutProvider } from "recyclerlistview";
 import Post from '../../components/Post/index';
 
+// https://youtu.be/3lfnR7OhZY8
+
 const posts = [
 
     {
         id: 'p1',
-        videoUri: 'https://d8vywknz0hvjw.cloudfront.net/fitenium-media-prod/videos/45fee890-a74f-11ea-8725-311975ea9616/proccessed_720.mp4',
+        videoUri: 'https://player.vimeo.com/external/393298588.sd.mp4?s=0609115262228e18bb346b0a0aa6bf5587cc11f6&profile_id=165&oauth2_token_id=57447761',
         user: {
             id: 'u1',
             username: 'daviddobrik',
@@ -24,7 +26,7 @@ const posts = [
     },
     {
         id: 'p2',
-        videoUri: 'https://d8vywknz0hvjw.cloudfront.net/fitenium-media-prod/videos/45fee890-a74f-11ea-8725-311975ea9616/proccessed_720.mp4',
+        videoUri: 'https://player.vimeo.com/external/473351034.sd.mp4?s=ff63bb067f9c82738074e947374ad17607adaa32&profile_id=165&oauth2_token_id=57447761',
         user: {
             id: 'u1',
             username: 'user 1',
@@ -40,7 +42,7 @@ const posts = [
     },
     {
         id: 'p3',
-        videoUri: 'https://d8vywknz0hvjw.cloudfront.net/fitenium-media-prod/videos/45fee890-a74f-11ea-8725-311975ea9616/proccessed_720.mp4',
+        videoUri: 'https://player.vimeo.com/external/434945761.sd.mp4?s=5eb72d29e32af84b927fa4bb08b85674dde2685a&profile_id=165&oauth2_token_id=57447761',
         user: {
             id: 'u1',
             username: 'user 2',
@@ -61,11 +63,19 @@ const [width, height] = [Dimensions.get('window').width, Dimensions.get('window'
 const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(posts)
 const layoutProvider = new LayoutProvider(
     (i) => {
-        return posts[i].type
+        if (i == posts.length - 1 && posts[i].type == 'post') {
+            return 'last post'
+        } else {
+            return posts[i].type
+        }
     },
     (type, dim) => {
         switch (type) {
             case 'post': 
+                dim.width = width;
+                dim.height = height - 79;
+                break;
+            case 'last post':
                 dim.width = width;
                 dim.height = height;
                 break;
@@ -79,6 +89,8 @@ const rowRenderer = (type, data) => {
     switch (type) {
         case 'post':
             return <Post post={data} />
+        case 'last post':
+            return <Post post={data} />
         default:
             return null
     }
@@ -87,15 +99,24 @@ const rowRenderer = (type, data) => {
 const Home = () => {
     return (
         <View>
+            {/* <FlatList
+                style={styles.list}
+                data={posts}
+                renderItem={({ item }) => <Post post={item} />}
+                showsVerticalScrollIndicator={false}
+                snapToInterval={Dimensions.get('window').height - 79}
+                snapToAlignment={'start'}
+                decelerationRate={'fast'}
+            /> */}
             <RecyclerListView 
                 style={styles.list}
                 layoutProvider={layoutProvider} 
                 dataProvider={dataProvider} 
                 rowRenderer={rowRenderer} 
                 showsVerticalScrollIndicator={false}
-                snapToInterval={Dimensions.get('window').height}
+                snapToInterval={Dimensions.get('window').height - 79}
                 snapToAlignment={'start'}
-                decelerationRate={'fast'}
+                decelerationRate={0}
             />
         </View>
     )

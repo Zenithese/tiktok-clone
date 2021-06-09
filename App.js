@@ -16,20 +16,29 @@ import {
   Text,
   useColorScheme,
   View,
+  Dimensions
 } from 'react-native';
+import 'react-native-gesture-handler'
+import Navigation from './src/navigation/index'
 
 const App = () => {
 
   return (
-    <View style={styles.appContainer}>
-      <Home />
-    </View>
+    <>
+      <StatusBar barStyle="light-content" />
+      <View style={styles.appContainer}>
+        <Navigation />
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   appContainer: {
-    
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    backgroundColor: 'black',
+    paddingBottom: 30
   },
 });
 

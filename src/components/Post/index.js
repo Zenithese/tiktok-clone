@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './styles';
-import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image, TouchableOpacity } from 'react-native';
 import Video from 'react-native-video';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -10,20 +10,25 @@ import SpinningAudioTrackImageThatLooksLikeARecord from './SpinningAudioTrackIma
 const Post = ({ post }) => {
 
     const [paused, setPaused] = useState(true)
+    const [liked, setLiked] = useState(false)
 
     const onPress = () => {
         setPaused(!paused);
     }
 
+    const onLikePress = () => {
+        setLiked(!liked)
+    }
+
     return (
         <View style={styles.container}>
             <TouchableWithoutFeedback onPress={onPress} >
-                <View >
+                <View>
                     <Video
                         source={{
                             uri: post.videoUri,
                         }}
-                        style={[styles.video, { backgroundColor: 'darkblue'}]}
+                        style={styles.video}
                         resizeMode={'cover'}
                         // onError={(e: LoadError) => console.log(e)}
                         // repeat={true}
@@ -39,10 +44,10 @@ const Post = ({ post }) => {
                                     source={{ uri: post.user.imageUri }} >
                                 </Image>
                             </View>
-                            <View style={styles.likesContainer}>
-                                <Fontisto name={'heart'} size={38} color='white' />
-                                <Text style={styles.count} >{post.likes}</Text>
-                            </View>
+                            <TouchableOpacity style={styles.likesContainer} onPress={onLikePress}>
+                                <Fontisto name={'heart'} size={38} color={liked ? 'red' : 'white'} />
+                                <Text style={styles.count} >{post.likes + liked}</Text>
+                            </TouchableOpacity>
                             <View style={styles.commentsContainer}>
                                 <FontAwesome name={'commenting'} size={40} color="white" />
                                 <Text style={styles.count} >{post.comments}</Text>
