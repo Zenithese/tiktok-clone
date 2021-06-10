@@ -9,7 +9,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// import Camera from '../screens/Camera';
+import Camera from '../screens/Camera';
 import plusIcon from '../assets/images/plus-icon.png';
 
 const Tab = createBottomTabNavigator();
@@ -26,7 +26,7 @@ const BottomNavigation = () => {
         >
             <Tab.Screen
                 name={'Home'}
-                component={Home}
+                children={Home}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Entypo name={'home'} size={25} color={color} />
@@ -35,7 +35,7 @@ const BottomNavigation = () => {
             />
             <Tab.Screen
                 name={'Search'}
-                component={() => <Text>Search</Text>}
+                children={() => <Text>Search</Text>}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <AntDesign name={'search1'} size={25} color={color} />
@@ -44,7 +44,7 @@ const BottomNavigation = () => {
             />
             <Tab.Screen
                 name={'Upload'}
-                component={() => <Text>Camera</Text>}
+                children={Camera}
                 options={{
                     tabBarIcon: ({ }) => (
                         <Image
@@ -57,7 +57,7 @@ const BottomNavigation = () => {
             />
             <Tab.Screen
                 name={'Inbox'}
-                component={Home}
+                children={Home}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
@@ -70,7 +70,7 @@ const BottomNavigation = () => {
             />
             <Tab.Screen
                 name={'Profile'}
-                component={Home}
+                children={Home}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Ionicons name={'person-outline'} size={25} color={color} />
