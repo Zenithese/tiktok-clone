@@ -35,7 +35,7 @@ const Underline = ({ measurements, scrollX }) => {
     })
     const translateX = scrollX.interpolate({
         inputRange,
-        outputRange: measurements.map((measurement) => measurement.x - 10)
+        outputRange: measurements.map((measurement) => measurement.x - 15 + (measurement.width / 2))
     })
     return (
         <Animated.View
