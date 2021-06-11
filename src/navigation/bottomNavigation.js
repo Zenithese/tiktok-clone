@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home/index';
+import Profile from '../screens/Profile/index'
 
 
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -26,7 +27,7 @@ const BottomNavigation = () => {
         >
             <Tab.Screen
                 name={'Home'}
-                children={Home}
+                children={Profile}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Entypo name={'home'} size={25} color={color} />
@@ -34,7 +35,7 @@ const BottomNavigation = () => {
                 }}
             />
             <Tab.Screen
-                name={'Search'}
+                name={'Discover'}
                 children={() => <Text>Search</Text>}
                 options={{
                     tabBarIcon: ({ color }) => (
@@ -69,8 +70,8 @@ const BottomNavigation = () => {
                 }}
             />
             <Tab.Screen
-                name={'Profile'}
-                children={Home}
+                name={'Me'}
+                children={Profile}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Ionicons name={'person-outline'} size={25} color={color} />

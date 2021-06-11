@@ -31,7 +31,7 @@ const Post = ({ post }) => {
                         style={styles.video}
                         resizeMode={'cover'}
                         // onError={(e: LoadError) => console.log(e)}
-                        // repeat={true}
+                        repeat={true}
                         paused={paused}
                     />
 
