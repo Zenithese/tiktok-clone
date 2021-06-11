@@ -70,25 +70,30 @@ const Tabs = ({ tabs, scrollX }) => {
     const [measurements, setMeasurements] = useState([])
 
     useEffect(() => {
-        let m = [];
-        tabs.forEach(tab => {
-            tab.ref.current.measureLayout(
-                containerRef.current,
-                (x, y, width, height) => {
-                    m.push({
-                        x,
-                        y,
-                        width,
-                        height,
-                    })
+        if (!(measurements.length && measurements[measurements.length - 1].x > 0)) {
+            let m = [];
+            tabs.forEach(tab => {
+                if (tab.ref.current) {
+                    tab.ref.current.measureLayout(
+                        containerRef.current,
+                        (x, y, width, height) => {
+                            m.push({
+                                x,
+                                y,
+                                width,
+                                height,
+                            })
 
-                    if (m.length === tabs.length) {
-                        setMeasurements(m);
-                    }
-                },
-            )
-        })
-    }, [])
+                            if (m.length === tabs.length) {
+                                setMeasurements(m);
+                                console.log(m)
+                            }
+                        },
+                    )
+                }
+            })
+        }
+    })
 
     console.log(measurements)
     return (
@@ -96,7 +101,7 @@ const Tabs = ({ tabs, scrollX }) => {
             {
                 tabs.map((tab) => {
                     return (
-                        <Tab tab={tab} ref={tab.ref} />
+                        <Tab tab={tab} ref={tab.ref} key={tab.key} />
                     )
                 })
             }
