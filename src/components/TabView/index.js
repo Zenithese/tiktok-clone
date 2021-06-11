@@ -54,10 +54,15 @@ const Underline = ({ measurements, scrollX }) => {
     )
 }
 
-const Tab = React.forwardRef(({ tab }, ref) => {
+const Tab = React.forwardRef(({ tab, flatListRef, index }, ref) => {
+
+    const onPress = () => {
+        flatListRef.current.scrollToIndex({ index: index })
+    }
+
     return (
         <View ref={ref}>
-            <TouchableOpacity  key={tab.key}>
+            <TouchableOpacity  key={tab.key} onPress={onPress}>
                 {tab.body}
             </TouchableOpacity>
         </View>
@@ -65,7 +70,7 @@ const Tab = React.forwardRef(({ tab }, ref) => {
     )
 })
 
-const Tabs = ({ tabs, scrollX }) => {
+const Tabs = ({ tabs, scrollX, flatListRef }) => {
     const containerRef = useRef()
     const [measurements, setMeasurements] = useState([])
 
@@ -86,7 +91,6 @@ const Tabs = ({ tabs, scrollX }) => {
 
                             if (m.length === tabs.length) {
                                 setMeasurements(m);
-                                console.log(m)
                             }
                         },
                     )
@@ -95,13 +99,12 @@ const Tabs = ({ tabs, scrollX }) => {
         }
     })
 
-    console.log(measurements)
     return (
         <View ref={containerRef} style={styles.container}>
             {
-                tabs.map((tab) => {
+                tabs.map((tab, index) => {
                     return (
-                        <Tab tab={tab} ref={tab.ref} key={tab.key} />
+                        <Tab tab={tab} ref={tab.ref} key={tab.key} flatListRef={flatListRef} index={index} />
                     )
                 })
             }
@@ -111,12 +114,15 @@ const Tabs = ({ tabs, scrollX }) => {
 }
 
 const TabView = () => {
-    const scrollX = useRef(new Animated.Value(0)).current  
+    const scrollX = useRef(new Animated.Value(0)).current 
+    
+    const flatListRef = useRef()
 
     return (
         <View>
-            <Tabs tabs={tabs} scrollX={scrollX} />
+            <Tabs tabs={tabs} scrollX={scrollX} flatListRef={flatListRef} />
             <Animated.FlatList
+                ref={(ref) => flatListRef.current = ref}
                 style={styles.animatedFlatlist}
                 data={tabs}
                 keyExtractor={(item) => item.key}
