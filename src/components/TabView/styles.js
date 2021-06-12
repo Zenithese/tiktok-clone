@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
+        backgroundColor: 'white',
     },
     tabsContainer: {
         width: Dimensions.get('window').width,
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     },
     section: {
         width: Dimensions.get('window').width,
-        height: 400,
+        height: 100,
     }
 });
 

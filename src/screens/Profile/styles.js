@@ -1,10 +1,38 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
+const [width, height] = [Dimensions.get('window').width, Dimensions.get('window').height - 79]
+
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
-        height: Dimensions.get('window').height - 79,
+        width: width,
+        height: height,
         alignItems: 'center',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
+    topHalfContainer: {
+        height: (height / 2) - 53,
+        width: width,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        justifyContent: 'flex-start',
+    },
+    topHalf: {
+        width: width,
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+    },
+    lowerHalf: {
+        // position: 'absolute',
+        // height: (height / 2) + 35,
+        // width: width,
+        // top: 0,
+        // left: 0,
+        // bottom: 0,
     },
     headerContainer: {
         borderBottomColor: 'lightgray',
@@ -23,19 +51,16 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 2,
         borderColor: '#fff',
-        marginTop: 15,
     },
     username: {
-        padding: 10,
         fontWeight: '500',
         fontSize: 17,
-        marginTop: 5,
+        paddingTop: 17,
     },
     engagementContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        padding: 10,
         justifyContent: 'space-around',
         width: Dimensions.get('window').width / 1.4,
     },
@@ -58,9 +83,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        padding: 5,
         justifyContent: 'space-around',
-        width: Dimensions.get('window').width / 1.9,
+        width: Dimensions.get('window').width / 2,
     },
     editTouchable: {
         borderWidth: 2,
@@ -78,7 +102,7 @@ const styles = StyleSheet.create({
     },  
     bioContainer: {
         alignItems: 'center',
-        margin: 20,
+        paddingBottom: 13,
     },
 });
 

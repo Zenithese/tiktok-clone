@@ -1,8 +1,10 @@
 import React, { useRef, createRef, useEffect, useState } from 'react';
 import styles from './styles';
-import { View, Text, TouchableOpacity, Animated, Easing, Dimensions, findNodeHandle, FlatList } from 'react-native';
+import { View, TouchableOpacity, Animated, Easing, Dimensions, findNodeHandle, ScrollView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { multiply } from 'react-native-reanimated';
+import { opacity } from 'react-native-redash/lib/module/v1';
 
 const [width, height] = [Dimensions.get('window').width, Dimensions.get('window').height]
 
@@ -113,14 +115,33 @@ const Tabs = ({ tabs, scrollX, flatListRef }) => {
     )
 }
 
-const TabView = () => {
+const TabView = ({ scrollY, topHeight }) => {
     const scrollX = useRef(new Animated.Value(0)).current 
     
     const flatListRef = useRef()
 
+    useEffect(() => {console.log(scrollY)})
+
     return (
         <View>
-            <Tabs tabs={tabs} scrollX={scrollX} flatListRef={flatListRef} />
+            <Animated.View
+                style={{
+                    // position: 'absolute',
+                    // top: -30,
+                    // left: 0,
+                    // right: 0,
+                    zIndex: 10,
+                    transform: [{
+                        translateY: scrollY.interpolate({
+                            inputRange: [topHeight, 700],
+                            outputRange: [0, 700 - topHeight],
+                            extrapolate: 'clamp'
+                        })
+                    }],
+                }}
+            >
+                <Tabs tabs={tabs} scrollX={scrollX} flatListRef={flatListRef} />
+            </Animated.View>
             <Animated.FlatList
                 ref={(ref) => flatListRef.current = ref}
                 style={styles.animatedFlatlist}
@@ -130,7 +151,7 @@ const TabView = () => {
                     return (
                         <View style={{
                                 width: width,
-                                height: 200,
+                                flex: 1,
                                 backgroundColor: item.color
                             }}
                         />
