@@ -3,8 +3,8 @@ import styles from './styles';
 import { View, TouchableOpacity, Animated, Easing, Dimensions, findNodeHandle, ScrollView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { multiply } from 'react-native-reanimated';
-import { opacity } from 'react-native-redash/lib/module/v1';
+import TabContent from './TabContent';
+import { data } from './data'
 
 const [width, height] = [Dimensions.get('window').width, Dimensions.get('window').height]
 
@@ -133,8 +133,8 @@ const TabView = ({ scrollY, topHeight }) => {
                     zIndex: 10,
                     transform: [{
                         translateY: scrollY.interpolate({
-                            inputRange: [topHeight, 700],
-                            outputRange: [0, 700 - topHeight],
+                            inputRange: [topHeight, Math.ceil(data.length / 3) * 170],
+                            outputRange: [0, Math.ceil(data.length / 3) * 170 - topHeight],
                             extrapolate: 'clamp'
                         })
                     }],
@@ -149,12 +149,13 @@ const TabView = ({ scrollY, topHeight }) => {
                 keyExtractor={(item) => item.key}
                 renderItem={({ item }) => {
                     return (
-                        <View style={{
-                                width: width,
-                                flex: 1,
-                                backgroundColor: item.color
-                            }}
-                        />
+                        // <View style={{
+                        //         width: width,
+                        //         flex: 1,
+                        //         backgroundColor: item.color
+                        //     }}
+                        // />
+                        <TabContent data={data} />
                     )
                 }}
                 showsHorizontalScrollIndicator={false}

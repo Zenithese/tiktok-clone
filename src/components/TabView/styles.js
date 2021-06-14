@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     },
     animatedFlatlist: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
     },
     section: {
         width: Dimensions.get('window').width,
