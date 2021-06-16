@@ -4,7 +4,8 @@ import { View, TouchableOpacity, Animated, Easing, Dimensions, findNodeHandle, S
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import TabContent from './TabContent';
-import { data } from './data'
+import { data } from './data';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 
 const [width, height] = [Dimensions.get('window').width, Dimensions.get('window').height]
 
@@ -29,12 +30,10 @@ const tabs = [
     },
 ]
 
+const inputRange = tabs.map((_, i) => i * width)
+
 const Underline = ({ measurements, scrollX }) => {
-    const inputRange = tabs.map((_, i) => i * width)
-    const indicatorWidth = scrollX.interpolate({
-        inputRange,
-        outputRange: measurements.map((measurement) => measurement.width)
-    })
+    
     const translateX = scrollX.interpolate({
         inputRange,
         outputRange: measurements.map((measurement) => measurement.x - 15 + (measurement.width / 2))
@@ -117,26 +116,29 @@ const Tabs = ({ tabs, scrollX, flatListRef }) => {
 
 const TabView = ({ scrollY, topHeight }) => {
     const scrollX = useRef(new Animated.Value(0)).current 
+
+    const [newScroll, setNewScroll] = useState(false)
+    const [viewableItems, setViewableItems] = useState(null)
+    const onViewRef = React.useRef((viewableItems) => {
+        setViewableItems(viewableItems)
+    })
+    // const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 })
     
     const flatListRef = useRef()
 
-    useEffect(() => {console.log(scrollY)})
+    const translateY = scrollY.interpolate({
+        inputRange: [topHeight, Math.ceil(data.length / 3) * 170],
+        outputRange: [0, Math.ceil(data.length / 3) * 170 - topHeight],
+        extrapolate: 'clamp'
+    })
 
     return (
         <View>
             <Animated.View
                 style={{
-                    // position: 'absolute',
-                    // top: -30,
-                    // left: 0,
-                    // right: 0,
                     zIndex: 10,
                     transform: [{
-                        translateY: scrollY.interpolate({
-                            inputRange: [topHeight, Math.ceil(data.length / 3) * 170],
-                            outputRange: [0, Math.ceil(data.length / 3) * 170 - topHeight],
-                            extrapolate: 'clamp'
-                        })
+                        translateY: translateY
                     }],
                 }}
             >
@@ -149,13 +151,7 @@ const TabView = ({ scrollY, topHeight }) => {
                 keyExtractor={(item) => item.key}
                 renderItem={({ item }) => {
                     return (
-                        // <View style={{
-                        //         width: width,
-                        //         flex: 1,
-                        //         backgroundColor: item.color
-                        //     }}
-                        // />
-                        <TabContent data={data} />
+                        <TabContent item={item} newScroll={newScroll} viewableItems={viewableItems} inputRange={inputRange} scrollX={scrollX} data={data} backgroundColor={item.color} scrollY={scrollY} topHeight={topHeight} />
                     )
                 }}
                 showsHorizontalScrollIndicator={false}
@@ -170,72 +166,13 @@ const TabView = ({ scrollY, topHeight }) => {
                     [{ nativeEvent: { contentOffset: { x: scrollX } } }],
                     { useNativeDriver: false }
                 )}
+                removeClippedSubviews={true}
+                onViewableItemsChanged={onViewRef.current}
+                // viewabilityConfig={viewConfigRef.current}
+                onScrollEndDrag={() => setNewScroll(!newScroll)}
             />
         </View>
     )
 }
 
 export default TabView;
-
-{/* <Animated.FlatList
-    contentContainerStyle={{ width: Dimensions.get('window').width, justifyContent: 'space-around' }}
-    style={styles.animatedFlatlist}
-    data={tabs}
-    keyExtractor={(tab) => tab.key}
-    renderItem={(item) => {
-        return (
-            <Tab ref={item.ref} body={item.body} key={item.key} />
-        )
-    }}
-    horizontal
-    showsHorizontalScrollIndicator={false}
-    pagingEnabled
-    onScroll={Animated.event(
-        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-        { useNativeDriver: false }
-    )}
-    bounces={false}
->
-</Animated.FlatList> */}
-
-// const formatedTabs = tabs.map((tab, index) => {
-//     switch (typeof tab) {
-//         case 'object':
-//             return (
-//                 <TouchableOpacity key={index}>
-//                     {tab}
-//                 </TouchableOpacity>
-//             )
-//         case 'string':
-//             return (
-//                 <TouchableOpacity key={index}>
-//                     <Text>{tab}</Text>
-//                 </TouchableOpacity>
-//             )
-//         default:
-//             return (
-//                 <TouchableOpacity key={index}>
-//                     <Text>N/A</Text>
-//                 </TouchableOpacity>
-//             )
-//     }
-// }
-// )
-
-// const formatedTabs = tabs.map((tab, index) => {
-//     switch (typeof tab) {
-//         case 'object':
-//             return (
-//                 <Tab ref={createRef} body={tab} key={index} />
-//             )
-//         case 'string':
-//             return (
-//                 <Tab ref={createRef} body={<Text>{tab}</Text>} key={index} />
-//             )
-//         default:
-//             return (
-//                 <Tab ref={createRef} body={<Text>N/A</Text>} key={index} />
-//             )
-//     }
-// }
-// )

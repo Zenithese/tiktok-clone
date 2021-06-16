@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import {data} from './data'
 
 const styles = StyleSheet.create({
     container: {
@@ -32,6 +33,8 @@ const styles = StyleSheet.create({
     },
     animatedFlatlist: {
         width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height - 190,
+        // height: Math.ceil(data.length / 3) * 170,
     },
     section: {
         width: Dimensions.get('window').width,

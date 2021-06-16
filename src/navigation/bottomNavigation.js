@@ -2,7 +2,8 @@ import React from 'react';
 import { Image, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home/index';
-import Profile from '../screens/Profile/index'
+import Profile from '../screens/Profile/index';
+import Example from '../components/Example/Example'
 
 
 import Entypo from 'react-native-vector-icons/Entypo';

@@ -7,8 +7,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import TabView from '../../components/TabView/index';
 
 const Profile = () => {
@@ -40,9 +38,10 @@ const Profile = () => {
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                     { useNativeDriver: true,
-                    listener: event => {
-                        console.log(event.nativeEvent.contentOffset.y)
-                    } }
+                        // listener: (event) => {
+                        //     console.log(scrollY)
+                        // }
+                    }
                 )}
             >
                 <View style={styles.topHalfContainer}>

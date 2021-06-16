@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions, Animated } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, Dimensions, Animated, TouchableOpacity } from 'react-native';
 
 const formatData = (data, numColumns) => {
     const numberOfFullRows = Math.floor(data.length / numColumns);
@@ -14,23 +14,40 @@ const formatData = (data, numColumns) => {
 };
 
 const numColumns = 3;
-export default function TabContent({ data }) {
+export default function TabContent({ item, newScroll, viewableItems, data, backgroundColor, scrollY, topHeight }) {
+
+    const flatListRef = useRef()
+
+    useEffect(() => {
+        // console.log(viewableItems)
+        if (viewableItems 
+            && viewableItems.viewableItems.some(viewable => viewable.key !== item.key)) {
+            flatListRef.current.scrollToOffset({ offset: 0 })
+        }
+    }, [newScroll])
+
+    const scrollable = scrollY.interpolate({
+        inputRange: [0, topHeight, Math.ceil(data.length / 3) * 170],
+        outputRange: [false, false, true],
+    })
 
     const renderItem = ({ item, index }) => {
         if (item.empty === true) {
             return <View style={[styles.item, styles.itemInvisible]} />;
         }
         return (
-            <View
-                style={styles.item}
+            <TouchableOpacity
+                onPress={(event) => console.log(event.nativeEvent)}
+                style={[styles.item, { backgroundColor: backgroundColor }]}
             >
                 <Text style={styles.itemText}>{item.key}</Text>
-            </View>
+            </TouchableOpacity>
         );
     };
 
     return (
         <Animated.FlatList
+            ref={(ref) => flatListRef.current = ref}
             data={formatData(data, numColumns)}
             style={styles.container}
             renderItem={renderItem}
@@ -38,6 +55,8 @@ export default function TabContent({ data }) {
             bounces={false}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
+            scrollEnabled={scrollable}
+            scrollToOffset={0}
         />
     );
 }
