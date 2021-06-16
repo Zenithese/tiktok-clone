@@ -14,15 +14,15 @@ const formatData = (data, numColumns) => {
 };
 
 const numColumns = 3;
-export default function TabContent({ item, newScroll, viewableItems, data, backgroundColor, scrollY, topHeight }) {
+export default function TabContent({ viewableIndex, item, newScroll, viewableItems, data, backgroundColor, scrollY, topHeight }) {
 
     const flatListRef = useRef()
 
     useEffect(() => {
-        // console.log(viewableItems)
+        console.log(viewableIndex)
         if (viewableItems 
             && viewableItems.viewableItems.some(viewable => viewable.key !== item.key)) {
-            flatListRef.current.scrollToOffset({ offset: 0 })
+                flatListRef.current.scrollToOffset({ offset: 0 })
         }
     }, [newScroll])
 
