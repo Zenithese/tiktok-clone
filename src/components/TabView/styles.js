@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     },
     animatedFlatlist: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height - 190,
-        // height: Math.ceil(data.length / 3) * 170,
+        // height: Dimensions.get('window').height - 190,
+        height: Math.ceil(data.length / 3) * 170,
     },
     section: {
         width: Dimensions.get('window').width,

@@ -59,7 +59,7 @@ const BottomNavigation = () => {
             />
             <Tab.Screen
                 name={'Inbox'}
-                children={Home}
+                children={() => <Text>Inbox</Text>}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons

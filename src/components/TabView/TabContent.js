@@ -14,16 +14,21 @@ const formatData = (data, numColumns) => {
 };
 
 const numColumns = 3;
-export default function TabContent({ viewableIndex, item, newScroll, viewableItems, data, backgroundColor, scrollY, topHeight }) {
+export default function TabContent({ viewableIndex, posRef, profileRef, item, newScroll, viewableItems, data, backgroundColor, scrollY, topHeight }) {
 
     const flatListRef = useRef()
 
+    // useEffect(() => {
+    //     if (viewableItems 
+    //         && viewableItems.viewableItems.some(viewable => viewable.key !== item.key)) {
+    //             // flatListRef.current.scrollToOffset({ offset: 0 })
+    //             // profileRef.current.scrollTo({ animated: false, y: topHeight })
+    //             if (posRef.current > topHeight) profileRef.current.scrollTo({ animated: false, y: topHeight })
+    //     }
+    // }, [newScroll])
+
     useEffect(() => {
-        console.log(viewableIndex)
-        if (viewableItems 
-            && viewableItems.viewableItems.some(viewable => viewable.key !== item.key)) {
-                flatListRef.current.scrollToOffset({ offset: 0 })
-        }
+        if (posRef.current > topHeight) profileRef.current.scrollTo({ animated: false, y: topHeight })
     }, [newScroll])
 
     const scrollable = scrollY.interpolate({
@@ -49,14 +54,17 @@ export default function TabContent({ viewableIndex, item, newScroll, viewableIte
         <Animated.FlatList
             ref={(ref) => flatListRef.current = ref}
             data={formatData(data, numColumns)}
-            style={styles.container}
+            style={[styles.container, {
+                // transform: [{translateY: translateY}]
+            }]}
             renderItem={renderItem}
             numColumns={numColumns}
             bounces={false}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            scrollEnabled={scrollable}
-            scrollToOffset={0}
+            scrollEnabled={false}
+            scrollToOffset={16}
+            onScrollBeginDrag={(event) => console.log(event.nativeEvent)}
         />
     );
 }

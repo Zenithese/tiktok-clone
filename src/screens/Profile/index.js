@@ -13,6 +13,9 @@ const Profile = () => {
 
     const scrollY = useRef(new Animated.Value(0)).current
 
+    const profileRef = useRef()
+    const posRef = useRef()
+
     return (
         <View style={styles.container}>
             <Animated.View 
@@ -32,15 +35,16 @@ const Profile = () => {
                 />
             </Animated.View>
             <Animated.ScrollView
+                ref={(ref) => profileRef.current = ref}
                 showsVerticalScrollIndicator={false}
                 bounces={false}
                 scrollEventThrottle={1}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                     { useNativeDriver: true,
-                        // listener: (event) => {
-                        //     console.log(scrollY)
-                        // }
+                        listener: (event) => {
+                            posRef.current = event.nativeEvent.contentOffset.y
+                        }
                     }
                 )}
             >
@@ -92,7 +96,7 @@ const Profile = () => {
                     </View>
                 </View>
                 <View style={styles.lowerHalf}>
-                    <TabView topHeight={styles.topHalfContainer.height} lowerHeight={styles.lowerHalf.height} scrollY={scrollY}/>
+                    <TabView posRef={posRef} topHeight={styles.topHalfContainer.height} lowerHeight={styles.lowerHalf.height} scrollY={scrollY} profileRef={profileRef} />
                 </View>
             </Animated.ScrollView>
         </View>

@@ -4,6 +4,8 @@ import { View, TouchableOpacity, Animated, Easing, Dimensions, findNodeHandle, S
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import TabContent from './TabContent';
+import TabContent2 from './TabContent2';
+import TabContent3 from './TabContent3';
 import { data } from './data';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
@@ -115,7 +117,7 @@ const Tabs = ({ setViewableIndex, tabs, scrollX, flatListRef }) => {
     )
 }
 
-const TabView = ({ scrollY, topHeight }) => {
+const TabView = ({ scrollY, topHeight, profileRef, posRef }) => {
     const scrollX = useRef(new Animated.Value(0)).current 
 
     const [newScroll, setNewScroll] = useState(false)
@@ -153,7 +155,7 @@ const TabView = ({ scrollY, topHeight }) => {
                 keyExtractor={(item) => item.key}
                 renderItem={({ item }) => {
                     return (
-                        <TabContent viewableIndex={viewableIndex} item={item} newScroll={newScroll} viewableItems={viewableItems} inputRange={inputRange} scrollX={scrollX} data={data} backgroundColor={item.color} scrollY={scrollY} topHeight={topHeight} />
+                        <TabContent posRef={posRef} profileRef={profileRef} viewableIndex={viewableIndex} item={item} newScroll={newScroll} viewableItems={viewableItems} inputRange={inputRange} scrollX={scrollX} data={data} backgroundColor={item.color} scrollY={scrollY} topHeight={topHeight} />
                     )
                 }}
                 showsHorizontalScrollIndicator={false}
@@ -172,7 +174,7 @@ const TabView = ({ scrollY, topHeight }) => {
                 onViewableItemsChanged={onViewRef.current}
                 // viewabilityConfig={viewConfigRef.current}
                 onScrollEndDrag={() => setNewScroll(!newScroll)}
-                onMomentumScrollEnd={() => setNewScroll(!newScroll)}
+                onMomentumScrollEnd={() => {setNewScroll(!newScroll)}}
             />
         </View>
     )
