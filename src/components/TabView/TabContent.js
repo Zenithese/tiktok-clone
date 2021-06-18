@@ -14,7 +14,7 @@ const formatData = (data, numColumns) => {
 };
 
 const numColumns = 3;
-export default function TabContent({ viewableIndex, posRef, profileRef, item, newScroll, viewableItems, data, backgroundColor, scrollY, topHeight }) {
+export default function TabContent({ translateY, viewableIndex, posRef, profileRef, item, newScroll, viewableItems, data, backgroundColor, scrollY, topHeight }) {
 
     const flatListRef = useRef()
 
@@ -28,6 +28,7 @@ export default function TabContent({ viewableIndex, posRef, profileRef, item, ne
     // }, [newScroll])
 
     useEffect(() => {
+        console.log(viewableItems)
         if (posRef.current > topHeight) profileRef.current.scrollTo({ animated: false, y: topHeight })
     }, [newScroll])
 
@@ -55,7 +56,11 @@ export default function TabContent({ viewableIndex, posRef, profileRef, item, ne
             ref={(ref) => flatListRef.current = ref}
             data={formatData(data, numColumns)}
             style={[styles.container, {
-                // transform: [{translateY: translateY}]
+                transform: [{
+                    translateY: 
+                    viewableItems 
+                    && viewableItems.viewableItems
+                    .some(viewable => viewable.key !== item.key) ? translateY : 0}]
             }]}
             renderItem={renderItem}
             numColumns={numColumns}

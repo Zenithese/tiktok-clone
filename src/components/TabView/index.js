@@ -16,19 +16,22 @@ const tabs = [
         key: 'tab1',
         body: <FontAwesome5 name={'grip-vertical'} size={15} color='black' />,
         ref: createRef(),
-        color: 'red'
+        color: 'red',
+        index: 0
     },
     {
         key: 'tab2',
         body: <Feather name={'heart'} size={15} color='black' />,
         ref: createRef(),
-        color: 'blue'
+        color: 'blue',
+        index: 1
     },
     {
         key: 'tab3',
         body: <Feather name={'lock'} size={15} color='black' />,
         ref: createRef(),
-        color: 'green'
+        color: 'green',
+        index: 2
     },
 ]
 
@@ -57,11 +60,12 @@ const Underline = ({ measurements, scrollX }) => {
     )
 }
 
-const Tab = React.forwardRef(({ setViewableIndex, tab, flatListRef, index }, ref) => {
+const Tab = React.forwardRef(({ setNewScroll, setViewableIndex, tab, flatListRef, index }, ref) => {
 
     const onPress = () => {
         flatListRef.current.scrollToIndex({ index: index })
         setViewableIndex(index)
+        setNewScroll(newScroll => !newScroll)
     }
 
     return (
@@ -74,7 +78,7 @@ const Tab = React.forwardRef(({ setViewableIndex, tab, flatListRef, index }, ref
     )
 })
 
-const Tabs = ({ setViewableIndex, tabs, scrollX, flatListRef }) => {
+const Tabs = ({ setNewScroll, setViewableIndex, tabs, scrollX, flatListRef }) => {
     const containerRef = useRef()
     const [measurements, setMeasurements] = useState([])
 
@@ -108,7 +112,7 @@ const Tabs = ({ setViewableIndex, tabs, scrollX, flatListRef }) => {
             {
                 tabs.map((tab, index) => {
                     return (
-                        <Tab setViewableIndex={setViewableIndex} tab={tab} ref={tab.ref} key={tab.key} flatListRef={flatListRef} index={index} />
+                        <Tab setNewScroll={setNewScroll} setViewableIndex={setViewableIndex} tab={tab} ref={tab.ref} key={tab.key} flatListRef={flatListRef} index={index} />
                     )
                 })
             }
@@ -146,7 +150,7 @@ const TabView = ({ scrollY, topHeight, profileRef, posRef }) => {
                     }],
                 }}
             >
-                <Tabs setViewableIndex={setViewableIndex} tabs={tabs} scrollX={scrollX} flatListRef={flatListRef} />
+                <Tabs setNewScroll={setNewScroll} setViewableIndex={setViewableIndex} tabs={tabs} scrollX={scrollX} flatListRef={flatListRef} />
             </Animated.View>
             <Animated.FlatList
                 ref={(ref) => flatListRef.current = ref}
@@ -155,7 +159,7 @@ const TabView = ({ scrollY, topHeight, profileRef, posRef }) => {
                 keyExtractor={(item) => item.key}
                 renderItem={({ item }) => {
                     return (
-                        <TabContent posRef={posRef} profileRef={profileRef} viewableIndex={viewableIndex} item={item} newScroll={newScroll} viewableItems={viewableItems} inputRange={inputRange} scrollX={scrollX} data={data} backgroundColor={item.color} scrollY={scrollY} topHeight={topHeight} />
+                        <TabContent translateY={translateY} posRef={posRef} profileRef={profileRef} viewableIndex={viewableIndex} item={item} newScroll={newScroll} viewableItems={viewableItems} inputRange={inputRange} scrollX={scrollX} data={data} backgroundColor={item.color} scrollY={scrollY} topHeight={topHeight} />
                     )
                 }}
                 showsHorizontalScrollIndicator={false}
@@ -174,7 +178,7 @@ const TabView = ({ scrollY, topHeight, profileRef, posRef }) => {
                 onViewableItemsChanged={onViewRef.current}
                 // viewabilityConfig={viewConfigRef.current}
                 onScrollEndDrag={() => setNewScroll(!newScroll)}
-                onMomentumScrollEnd={() => {setNewScroll(!newScroll)}}
+                // onMomentumScrollEnd={() => {setNewScroll(!newScroll)}}
             />
         </View>
     )
