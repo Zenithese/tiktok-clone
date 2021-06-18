@@ -1,6 +1,6 @@
 import React, { useRef, createRef, useEffect, useState } from 'react';
 import styles from './styles';
-import { View, TouchableOpacity, Animated, Easing, Dimensions, findNodeHandle, ScrollView } from 'react-native';
+import { View, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, Dimensions, findNodeHandle, ScrollView } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import TabContent from './TabContent';
@@ -127,10 +127,11 @@ const TabView = ({ scrollY, topHeight, profileRef, posRef }) => {
     const [newScroll, setNewScroll] = useState(false)
     const [viewableItems, setViewableItems] = useState(null)
     const [viewableIndex, setViewableIndex] = useState(0)
+    const [momentum, setMomentum] = useState(false)
     const onViewRef = React.useRef((viewableItems) => {
         setViewableItems(viewableItems)
     })
-    // const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 })
+    const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 15 })
     
     const flatListRef = useRef()
 
@@ -159,7 +160,7 @@ const TabView = ({ scrollY, topHeight, profileRef, posRef }) => {
                 keyExtractor={(item) => item.key}
                 renderItem={({ item }) => {
                     return (
-                        <TabContent translateY={translateY} posRef={posRef} profileRef={profileRef} viewableIndex={viewableIndex} item={item} newScroll={newScroll} viewableItems={viewableItems} inputRange={inputRange} scrollX={scrollX} data={data} backgroundColor={item.color} scrollY={scrollY} topHeight={topHeight} />
+                        <TabContent setMomentum={setMomentum} momentum={momentum} translateY={translateY} posRef={posRef} profileRef={profileRef} viewableIndex={viewableIndex} item={item} newScroll={newScroll} viewableItems={viewableItems} inputRange={inputRange} scrollX={scrollX} data={data} backgroundColor={item.color} scrollY={scrollY} topHeight={topHeight} />
                     )
                 }}
                 showsHorizontalScrollIndicator={false}
@@ -172,13 +173,17 @@ const TabView = ({ scrollY, topHeight, profileRef, posRef }) => {
                 bounces={false}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                    { useNativeDriver: false }
+                    { useNativeDriver: true, 
+                    listener: () => {
+                        setMomentum(true)
+                    } }
                 )}
                 removeClippedSubviews={true}
                 onViewableItemsChanged={onViewRef.current}
-                // viewabilityConfig={viewConfigRef.current}
-                onScrollEndDrag={() => setNewScroll(!newScroll)}
-                // onMomentumScrollEnd={() => {setNewScroll(!newScroll)}}
+                viewabilityConfig={viewConfigRef.current}
+                onScrollEndDrag={() => { if (momentum) setNewScroll(!newScroll) }}
+                onMomentumScrollEnd={() => setMomentum(false)}
+
             />
         </View>
     )
