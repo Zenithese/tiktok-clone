@@ -21,7 +21,6 @@ const SearchComponent = () => {
                 onChangeText={handleQuery}
                 value={query}
             />
-            <Text>Discover</Text>
         </SafeAreaView>
     )
 }
