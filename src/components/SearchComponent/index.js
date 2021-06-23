@@ -15,8 +15,9 @@ const SearchComponent = () => {
     return (
         <SafeAreaView>
             <SearchBar
+                inputContainerStyle={{ borderRadius: 2, height: 20, marginVertical: 3 }}
                 platform="ios"
-                placeholder="Type Here..."
+                placeholder="Search"
                 onChangeText={handleQuery}
                 value={query}
             />
