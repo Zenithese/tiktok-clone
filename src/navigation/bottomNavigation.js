@@ -3,6 +3,7 @@ import { Image, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home/index';
 import Profile from '../screens/Profile/index';
+import Discover from '../screens/Discover/index';
 import Example from '../components/Example/Example'
 
 
@@ -28,7 +29,7 @@ const BottomNavigation = () => {
         >
             <Tab.Screen
                 name={'Home'}
-                children={Profile}
+                children={Discover}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Entypo name={'home'} size={25} color={color} />
@@ -37,7 +38,7 @@ const BottomNavigation = () => {
             />
             <Tab.Screen
                 name={'Discover'}
-                children={() => <Text>Search</Text>}
+                children={Discover}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <AntDesign name={'search1'} size={25} color={color} />
