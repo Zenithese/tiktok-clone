@@ -4,6 +4,7 @@ import { createBottomTabNavigator, useBottomTabBarHeight } from '@react-navigati
 import Home from '../screens/Home/index';
 import Profile from '../screens/Profile/index';
 import Discover from '../screens/Discover/index';
+import Inbox from '../screens/Inbox/index';
 import Example from '../components/Example/Example'
 
 
@@ -30,7 +31,7 @@ const BottomNavigation = () => {
         >
             <Tab.Screen
                 name={'Home'}
-                children={Discover}
+                children={Home}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <Entypo name={'home'} size={25} color={color} />
@@ -61,7 +62,7 @@ const BottomNavigation = () => {
             />
             <Tab.Screen
                 name={'Inbox'}
-                children={() => <Text>Inbox</Text>}
+                children={Inbox}
                 options={{
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons

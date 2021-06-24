@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, Dimensions, TextInput, FlatList, SafeAreaView, Animated } from 'react-native';
+import { View, Text, Dimensions, TextInput, FlatList, SafeAreaView, Animated, ActivityIndicator } from 'react-native';
 import { Header, SearchBar } from 'react-native-elements';
 import Category from '../Category/index';
 
@@ -56,9 +56,15 @@ const SearchComponent = () => {
                 )}
                 onEndReached={() => {
                     console.log('reached')
-                    setData(new Array(10).fill(0).map(_ => new Object))
+                    const newData = [...data, ...new Array(5).fill(0).map(_ => new Object) ]
+                    setData(newData)
                 }}
                 onEndReachedThreshold={0.5}
+                ListFooterComponent={
+                    <View>
+                        <ActivityIndicator />
+                    </View>
+                }
             />
         </View>
     )

@@ -26,6 +26,7 @@ export default function TabContent({ setMomentum, momentum, translateY, viewable
         if (posRef.current > topHeight) {
             profileRef.current.scrollTo({ animated: false, y: topHeight })
             setInterupt(false)
+            console.log(viewableItems)
         }
     }, [newScroll])
 
@@ -34,12 +35,17 @@ export default function TabContent({ setMomentum, momentum, translateY, viewable
             return <View style={[styles.item, styles.itemInvisible]} />;
         }
         return (
-            <View
-                onPress={(event) => console.log(event.nativeEvent)}
+            <TouchableOpacity
+                onPressIn={() => {
+                    setInterupt(true)
+                }}
+                onPress={(event) => {
+                    console.log(event.nativeEvent)
+                }}
                 style={[styles.item, { backgroundColor: backgroundColor }]}
             >
                 <Text style={styles.itemText}>{item.key}</Text>
-            </View>
+            </TouchableOpacity>
         );
     };
 
@@ -49,7 +55,9 @@ export default function TabContent({ setMomentum, momentum, translateY, viewable
 
     return (
         <TouchableWithoutFeedback
-            onPressIn={() => {setInterupt(true)}}
+            // onPressIn={() => {
+            //     setInterupt(true)
+            // }}
         >
             <View>
                 <Animated.FlatList
