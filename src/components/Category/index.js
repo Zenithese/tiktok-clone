@@ -30,7 +30,9 @@ const Category = () => {
     };
 
     return (
-        <View>
+        <View
+            style={{ zIndex: 0 }}
+        >
             <View style={styles.categoryBanner}>
                 <View style={styles.leftSide}>
                     <View style={styles.categoryImage}>

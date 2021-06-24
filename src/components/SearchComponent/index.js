@@ -1,27 +1,61 @@
-import React, { useState } from 'react';
-import { View, Text, Dimensions, TextInput, FlatList, SafeAreaView } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, Dimensions, TextInput, FlatList, SafeAreaView, Animated } from 'react-native';
 import { Header, SearchBar } from 'react-native-elements';
+import Category from '../Category/index';
 
 const [width, height] = [Dimensions.get('window').width, Dimensions.get('window').height]
+
+const data = new Array(5).fill(0).map(_ => new Object)
 
 const SearchComponent = () => {
 
     const [query, setQuery] = useState('')
+
+    const scrollY = useRef(new Animated.Value(0)).current
+    const contentHeight = useRef(new Animated.Value(0)).current
+
+    const translateY = scrollY.interpolate({
+        inputRange: [0, 1000],
+        outputRange: [0, 1000],
+        extrapolate: 'clamp'
+    })
 
     const handleQuery = (q) => {
         setQuery(q)
     };
 
     return (
-        <SafeAreaView>
-            <SearchBar
-                inputContainerStyle={{ borderRadius: 2, height: 20, marginVertical: 3 }}
-                platform="ios"
-                placeholder="Search"
-                onChangeText={handleQuery}
-                value={query}
+        <View>
+            <Animated.FlatList
+                ListHeaderComponentStyle={{ zIndex: 10 }}
+                ListHeaderComponent={
+                    <Animated.View
+                        style={{
+                            transform: [{
+                                translateY: translateY
+                            }],
+                        }}
+                    >
+                        <SearchBar
+                            inputContainerStyle={{ borderRadius: 2, height: 20, marginVertical: 3 }}
+                            platform="ios"
+                            placeholder="Search"
+                            onChangeText={handleQuery}
+                            value={query}
+                        />
+                    </Animated.View>
+                }
+                style={{ width: width }}
+                data={data}
+                renderItem={({ item }) => <Category />}
+                showsVerticalScrollIndicator={false}
+                bounces={false}
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: scrollY }, contentSize: { height: contentHeight } } }],
+                    { useNativeDriver: true }
+                )}
             />
-        </SafeAreaView>
+        </View>
     )
 }
 
