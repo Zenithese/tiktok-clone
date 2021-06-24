@@ -15,7 +15,7 @@ const formatData = (data, numColumns) => {
 };
 
 const numColumns = 3;
-export default function TabContent({ setMomentum, momentum,translateY, viewableIndex, posRef, profileRef, item, newScroll, viewableItems, data, backgroundColor, scrollY, topHeight }) {
+export default function TabContent({ setMomentum, momentum, translateY, viewableIndex, posRef, profileRef, item, newScroll, viewableItems, data, backgroundColor, scrollY, topHeight }) {
 
     const flatListRef = useRef()
 
