@@ -22,7 +22,7 @@ const posts = [
         likes: 123,
         comments: 12,
         shares: 44,
-        type: 'post'
+        kind: 'post'
     },
     {
         id: 'p2',
@@ -38,7 +38,7 @@ const posts = [
         likes: 123,
         comments: 12,
         shares: 44,
-        type: 'post'
+        kind: 'post'
     },
     {
         id: 'p3',
@@ -54,7 +54,7 @@ const posts = [
         likes: 123,
         comments: 12,
         shares: 44,
-        type: 'post'
+        kind: 'post'
     }
 
 ]
@@ -63,10 +63,10 @@ const [width, height] = [Dimensions.get('window').width, Dimensions.get('window'
 const dataProvider = new DataProvider((r1, r2) => r1 !== r2).cloneWithRows(posts)
 const layoutProvider = new LayoutProvider(
     (i) => {
-        if (i == posts.length - 1 && posts[i].type == 'post') {
+        if (i == posts.length - 1 && posts[i].kind == 'post') {
             return 'last post'
         } else {
-            return posts[i].type
+            return posts[i].kind
         }
     },
     (type, dim) => {
