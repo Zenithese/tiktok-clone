@@ -26,7 +26,7 @@ const Post = ({ post }) => {
                 <View>
                     <Video
                         source={{
-                            uri: post.videoUri,
+                            uri: post.video_uri,
                         }}
                         style={styles.video}
                         resizeMode={'cover'}
@@ -64,11 +64,11 @@ const Post = ({ post }) => {
                                 <Text style={styles.description}>{post.description}</Text>
                                 <View style={styles.audioInfo}>
                                     <Entypo name={'beamed-note'} size={24} color='white' />
-                                    <Text style={styles.audio}>{post.audioName}</Text>
+                                    <Text style={styles.audio}>{post.audio_name}</Text>
                                 </View>
                             </View>
 
-                            <SpinningAudioTrackImageThatLooksLikeARecord uri={post.audioImage} />
+                            <SpinningAudioTrackImageThatLooksLikeARecord uri={post.audio_uri} />
                         </View>
                     </View>
                 </View>
