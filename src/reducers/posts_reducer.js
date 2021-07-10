@@ -4,9 +4,8 @@ const postsReducer = (state = [], action) => {
     Object.freeze(state);
     switch (action.type) {
         case RECEIVE_POSTS:
-
+            
             const tempFiller = {
-                likes: 123,
                 comments: 12,
                 shares: 44,
             }

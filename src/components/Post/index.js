@@ -46,7 +46,7 @@ const Post = ({ post }) => {
                             </View>
                             <TouchableOpacity style={styles.likesContainer} onPress={onLikePress}>
                                 <Fontisto name={'heart'} size={38} color={liked ? 'red' : 'white'} />
-                                <Text style={styles.count} >{post.likes + liked}</Text>
+                                <Text style={styles.count} >{post.likes.length + liked}</Text>
                             </TouchableOpacity>
                             <View style={styles.commentsContainer}>
                                 <FontAwesome name={'commenting'} size={40} color="white" />
