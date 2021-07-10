@@ -41,7 +41,7 @@ const Post = ({ post }) => {
                             <View style={styles.profileImageContainer}>
                                 <Image 
                                     style={styles.profileImage} 
-                                    source={{ uri: post.user.imageUri }} >
+                                    source={{ uri: post.user.image_uri }} >
                                 </Image>
                             </View>
                             <TouchableOpacity style={styles.likesContainer} onPress={onLikePress}>
