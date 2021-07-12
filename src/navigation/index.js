@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import BottomNavigation from './bottomNavigation';
 import configureStore from '../store/store';
+import BottomSheet from '../components/bottomSheet';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ export default function Navigation() {
                     <Stack.Screen name="Home" children={BottomNavigation} />
                 </Stack.Navigator>
             </NavigationContainer>
+            <BottomSheet />
         </Provider> 
     )
 }
