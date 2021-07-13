@@ -4,7 +4,7 @@ export default (state = null, action) => {
     Object.freeze(state);
     switch (action.type) {
         case OPEN_BOTTOM_SHEET:
-            return action.bottomSheet;
+            return true;
         case CLOSE_BOTTOM_SHEET:
             return null;
         default:
