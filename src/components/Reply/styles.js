@@ -1,29 +1,26 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const [width, height] = [Dimensions.get('window').width, Dimensions.get('window').height]
+const width = (Dimensions.get('window').width)
 
 const styles = StyleSheet.create({
     container: {
-
-    },
-    commentContainer: {
         flexDirection: 'row',
-        paddingBottom: 10,
+        paddingTop: 10,
+        alignSelf: 'flex-end'
     },
     commentBanner: {
         flexDirection: 'row',
         justifyContent: 'space-around'
     },
     center: {
-        width: width * .70,
+        width: width * .62,
     },
     profileImageContainer: {
-        width: width * .15,
-        alignItems: 'center',
+        width: width * .08,
     },
     profileImage: {
-        width: 34,
-        height: 34,
+        width: 20,
+        height: 20,
         borderRadius: 25,
         borderWidth: 2,
         borderColor: 'lightgray',
@@ -59,10 +56,6 @@ const styles = StyleSheet.create({
     reply: {
         color: 'gray',
         marginTop: 5,
-    },
-    viewReply: {
-        color: 'gray',
-        marginVertical: 5,
     },
 });
 
