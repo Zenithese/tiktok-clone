@@ -28,12 +28,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     usernameContainer: {
-
+        flexDirection: 'row',
     },
     username: {
         color: 'darkgray',
         fontSize: 14,
         fontWeight: 'bold',
+    },
+    recipientContainer: {
+        flexDirection: 'row',
+    },
+    recipientCaretContainer: {
+        justifyContent: 'center',
     },
     likesContainer: {
         alignItems: 'center',

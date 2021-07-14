@@ -8,10 +8,12 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import SpinningAudioTrackImageThatLooksLikeARecord from './SpinningAudioTrackImageThatLooksLikeARecord'
 import { connect } from 'react-redux';
 import { openBottomSheet, closeBottomSheet } from '../../actions/bottom_sheet_actions';
+import { setViewableComments } from '../../actions/viewable_comments_actions';
 
 const mapStateToProps = ({ ui }) => {
     return {
-        bottomSheet: ui.bottomSheet
+        bottomSheet: ui.bottomSheet,
+        viewableComments: ui.viewableComments,
     }
 }
 
@@ -19,10 +21,11 @@ const mapDispatchToProps = dispatch => {
     return {
         openBottomSheet: () => dispatch(openBottomSheet()),
         closeBottomSheet: () => dispatch(closeBottomSheet()),
+        setViewableComments: (comments) => dispatch(setViewableComments(comments))
     };
 };
 
-const Post = ({ post, bottomSheet, openBottomSheet, closeBottomSheet }) => {
+const Post = ({ post, bottomSheet, openBottomSheet, closeBottomSheet, setViewableComments }) => {
 
     const [paused, setPaused] = useState(true)
     const [liked, setLiked] = useState(false)
@@ -39,6 +42,7 @@ const Post = ({ post, bottomSheet, openBottomSheet, closeBottomSheet }) => {
         if (bottomSheet) {
             closeBottomSheet()
         } else {
+            setViewableComments(post.comments)
             openBottomSheet()
         }
     }
@@ -73,7 +77,7 @@ const Post = ({ post, bottomSheet, openBottomSheet, closeBottomSheet }) => {
                             </TouchableOpacity>
                             <View style={styles.commentsContainer}>
                                 <FontAwesome name={'commenting'} size={40} color="white" onPress={onCommentPress} />
-                                <Text style={styles.count} >{post.comments}</Text>
+                                <Text style={styles.count} >{post.comments.length}</Text>
                             </View>
                             <View style={styles.shareContainer}>
                                 <Fontisto name={'share-a'} size={35} color='white' />

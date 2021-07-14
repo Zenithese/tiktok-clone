@@ -4,9 +4,7 @@ const postsReducer = (state = [], action) => {
     Object.freeze(state);
     switch (action.type) {
         case RECEIVE_POSTS:
-            
             const tempFiller = {
-                comments: 12,
                 shares: 44,
             }
             const newData = action.posts.map(post => {

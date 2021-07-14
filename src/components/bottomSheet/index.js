@@ -5,9 +5,11 @@ import Comment from '../Comment/index';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { connect } from 'react-redux';
 import { closeBottomSheet } from '../../actions/bottom_sheet_actions';
+import { fetchComments } from '../../actions/comments_actions';
 
 const mapStateToProps = ({ ui }) => {
     return {
+        comments: ui.viewableComments,
         bottomSheet: ui.bottomSheet
     }
 }
@@ -15,23 +17,26 @@ const mapStateToProps = ({ ui }) => {
 const mapDispatchToProps = dispatch => {
     return {
         closeBottomSheet: () => dispatch(closeBottomSheet()),
+        fetchComments: () => dispatch(fetchComments()),
     }
 }
 
-const data = new Array(20).fill(0).map(_ => new Object)
-
 const height = Dimensions.get('window').height
 
-const BottomSheet = ({ bottomSheet, closeBottomSheet }) => {
+const BottomSheet = ({ bottomSheet, closeBottomSheet, comments, fetchComments }) => {
 
     const scrollY = useRef(new Animated.Value(0)).current
-    const scrollAnim = useRef(new Animated.Value(0)).current
+    const scrollAnim = useRef(new Animated.Value(height)).current
 
     const translateY = scrollY.interpolate({
         inputRange: [0, 1000],
         outputRange: [0, 1000],
         extrapolate: 'clamp'
     })
+
+    useEffect(() => {
+        fetchComments()
+    }, [])
 
     useEffect(() => {
         if (bottomSheet) {
@@ -99,8 +104,8 @@ const BottomSheet = ({ bottomSheet, closeBottomSheet }) => {
                             </TouchableOpacity>
                         </Animated.View>
                     }
-                    data={data}
-                    renderItem={({ item }) => <Comment />}
+                    data={comments}
+                    renderItem={({ item }) => <Comment body={item.body} comments={item.comments} username={item.username} likes={item.likes} key={item.id} />}
                 />
             </View>
             <View style={styles.inputContainer}>
