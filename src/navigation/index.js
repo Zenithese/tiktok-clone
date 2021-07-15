@@ -1,12 +1,10 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import BottomNavigation from './bottomNavigation';
 import configureStore from '../store/store';
 import BottomSheet from '../components/bottomSheet';
-
-const Stack = createStackNavigator();
+import App from './app';
+import Auth from './auth';
 
 let store = configureStore();
 
@@ -19,9 +17,7 @@ export default function Navigation() {
     return (
         <Provider store={store}>
             <NavigationContainer>
-                <Stack.Navigator screenOptions={{headerShown: false}} >
-                    <Stack.Screen name="Home" children={BottomNavigation} />
-                </Stack.Navigator>
+                {false ? <App /> : <Auth />}
             </NavigationContainer>
             <BottomSheet />
         </Provider> 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Text } from 'react-native';
-import { createBottomTabNavigator, useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home/index';
 import Profile from '../screens/Profile/index';
 import Discover from '../screens/Discover/index';
