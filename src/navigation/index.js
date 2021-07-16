@@ -5,6 +5,7 @@ import configureStore from '../store/store';
 import BottomSheet from '../components/bottomSheet';
 import App from './app';
 import Auth from './auth';
+import Greeting from './greeting';
 
 let store = configureStore();
 
@@ -17,7 +18,7 @@ export default function Navigation() {
     return (
         <Provider store={store}>
             <NavigationContainer>
-                {false ? <App /> : <Auth />}
+                <Greeting />
             </NavigationContainer>
             <BottomSheet />
         </Provider> 

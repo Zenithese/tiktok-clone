@@ -3,31 +3,23 @@ import humps from 'humps';
 
 export const login = user => {
     return axios.post(
-        '/api/session', 
+        'http://localhost:3000/api/session',
         { user }, 
-        { withCredentials: true }
+        // { withCredentials: true }
     )
 };
 
-export const getCurrentUser = () => {
-    return axios.get('/api/session', 
-        {
-            withCredentials: true,
-        },
-    )
-}
-
 export const signup = user => {
     return axios.post(
-        '/api/users', 
+        'http://localhost:3000/api/user',
         { user }, 
-        { withCredentials: true }
+        // { withCredentials: true }
     )
 };
 
 export const logout = () => {
     return axios.delete(
-        '/api/session',
-        { withCredentials: true }
+        'http://localhost:3000/api/session',
+        // { withCredentials: true }
     )
 };
