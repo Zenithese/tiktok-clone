@@ -4,7 +4,7 @@ import { Input } from 'react-native-elements';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import { login, signup } from '../../actions/session_actions';
+import { login, signup, validateToken } from '../../actions/session_actions';
 
 const mapStateToProps = () => {
     return {
@@ -38,6 +38,13 @@ const SessionForm = ({ formType, signup, login }) => {
         };
     };
 
+    const handleDemo = () => {
+        login({
+            username: 'Test',
+            password: 'password'
+        })
+    };
+
     return (
         <View style={styles.container}>
             <Input
@@ -61,6 +68,12 @@ const SessionForm = ({ formType, signup, login }) => {
             <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
                 <Text style={styles.buttonText}>{formType}</Text>
             </TouchableOpacity>
+            {
+                formType === 'Login' &&
+                <TouchableOpacity style={styles.buttonContainer} onPress={handleDemo}>
+                    <Text style={styles.buttonText}>Demo</Text>
+                </TouchableOpacity>
+            }
             <TouchableOpacity style={styles.switchFormContainer} onPress={() => navigation.navigate(formType === 'Login' ? 'Signup' : 'Login')}>
                 <Text style={styles.switchForm}>{formType === 'Login' ? 'Signup instead' : 'Login instead'}</Text>
             </TouchableOpacity>

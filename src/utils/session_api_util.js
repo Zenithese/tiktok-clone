@@ -17,9 +17,12 @@ export const signup = user => {
     )
 };
 
-export const logout = () => {
-    return axios.delete(
-        'http://localhost:3000/api/session',
-        // { withCredentials: true }
-    )
+export const logout = id => {
+    return axios.delete(`/api/session/${id}`)
 };
+
+export const validateToken = user => {
+    return axios.get(
+        `http://localhost:3000/api/validate_token/?token=${user.token}&id=${user.id}`,
+    )
+}
