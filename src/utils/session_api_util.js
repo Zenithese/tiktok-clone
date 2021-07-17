@@ -3,7 +3,7 @@ import humps from 'humps';
 
 export const login = user => {
     return axios.post(
-        'http://localhost:3000/api/session',
+        'http://localhost:3000/api/sessions',
         { user }, 
         // { withCredentials: true }
     )
@@ -18,7 +18,7 @@ export const signup = user => {
 };
 
 export const logout = id => {
-    return axios.delete(`/api/session/${id}`)
+    return axios.delete(`http://localhost:3000/api/sessions/${id}`)
 };
 
 export const validateToken = user => {

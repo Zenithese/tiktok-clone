@@ -46,7 +46,7 @@ const Content = ({ token, logout, logoutCurrentUser }) => {
                         </View>
                     }
                     rightComponent={
-                        <TouchableOpacity onPress={() => logoutCurrentUser()}>
+                        <TouchableOpacity onPress={() => logout(token)}>
                             <Entypo name={'dots-three-vertical'} size={20} color='black' />
                         </TouchableOpacity>
                     }
