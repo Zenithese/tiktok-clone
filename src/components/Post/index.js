@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './styles';
 import { View, Text, TouchableWithoutFeedback, Image, TouchableOpacity } from 'react-native';
 import Video from 'react-native-video';
@@ -9,9 +9,11 @@ import SpinningAudioTrackImageThatLooksLikeARecord from './SpinningAudioTrackIma
 import { connect } from 'react-redux';
 import { openBottomSheet, closeBottomSheet } from '../../actions/bottom_sheet_actions';
 import { setViewableComments } from '../../actions/viewable_comments_actions';
+import { createLike, deleteLike } from '../../actions/likes_actions';
 
-const mapStateToProps = ({ ui }) => {
+const mapStateToProps = ({ session: { auth }, ui }) => {
     return {
+        userId: auth.id,
         bottomSheet: ui.bottomSheet,
         viewableComments: ui.viewableComments,
     }
@@ -21,21 +23,31 @@ const mapDispatchToProps = dispatch => {
     return {
         openBottomSheet: () => dispatch(openBottomSheet()),
         closeBottomSheet: () => dispatch(closeBottomSheet()),
-        setViewableComments: (comments) => dispatch(setViewableComments(comments))
+        setViewableComments: (comments) => dispatch(setViewableComments(comments)),
+        createLike: (like) => dispatch(createLike(like)),
+        deleteLike: (id) => dispatch(deleteLike(id))
     };
 };
 
-const Post = ({ post, bottomSheet, openBottomSheet, closeBottomSheet, setViewableComments }) => {
+const Post = ({ createLike, deleteLike, userId, post, bottomSheet, openBottomSheet, closeBottomSheet, setViewableComments }) => {
 
     const [paused, setPaused] = useState(true)
-    const [liked, setLiked] = useState(false)
 
     const onPress = () => {
         setPaused(!paused);
     }
 
+    useEffect(() => {
+        setViewableComments(post.comments)
+    }, [post])
+
     const onLikePress = () => {
-        setLiked(!liked)
+        const like = {
+            likeable_type: "Post",
+            likeable_id: post.id,
+            user_id: userId
+        }
+        post.likes && post.likes[userId] ? deleteLike(post.likes[userId].id) : createLike(like)
     }
 
     const onCommentPress = () => {
@@ -72,8 +84,8 @@ const Post = ({ post, bottomSheet, openBottomSheet, closeBottomSheet, setViewabl
                                 </Image>
                             </View>
                             <TouchableOpacity style={styles.likesContainer} onPress={onLikePress}>
-                                <Fontisto name={'heart'} size={38} color={liked ? 'red' : 'white'} />
-                                <Text style={styles.count} >{post.likes.length + liked}</Text>
+                                <Fontisto name={'heart'} size={38} color={post.likes && post.likes[userId] ? 'red' : 'white'} />
+                                <Text style={styles.count} >{post.likes ? Object.values(post.likes).length : 0}</Text>
                             </TouchableOpacity>
                             <View style={styles.commentsContainer}>
                                 <FontAwesome name={'commenting'} size={40} color="white" onPress={onCommentPress} />
@@ -81,7 +93,7 @@ const Post = ({ post, bottomSheet, openBottomSheet, closeBottomSheet, setViewabl
                             </View>
                             <View style={styles.shareContainer}>
                                 <Fontisto name={'share-a'} size={35} color='white' />
-                                <Text style={styles.count} >{post.shares}</Text>
+                                <Text style={styles.count} >44</Text>
                             </View>
                         </View>
 

@@ -2,13 +2,31 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Pressable } from 'react-native';
 import styles from './styles';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import { connect } from 'react-redux';
+import { createLike, deleteLike } from '../../actions/likes_actions';
 
-const Reply = ({ body, username, recipient, likes }) => {
+const mapStateToProps = ({ session: { auth } }) => {
+    return {
+        userId: auth.id
+    }
+}
 
-    const [liked, setLiked] = useState(false)
+const mapDispatchToProps = dispatch => {
+    return {
+        createLike: (like) => dispatch(createLike(like)),
+        deleteLike: (id) => dispatch(deleteLike(id))
+    }
+}
+
+const Reply = ({ userId, replyId, createLike, deleteLike, body, username, recipient, likes }) => {
 
     const onLikePress = () => {
-        setLiked(!liked)
+        const like = {
+            likeable_type: "Comment",
+            likeable_id: replyId,
+            user_id: userId
+        }
+        likes && likes[userId] ? deleteLike(likes[userId].id) : createLike(like)
     }
 
     return (
@@ -41,12 +59,12 @@ const Reply = ({ body, username, recipient, likes }) => {
                 </View>
 
                 <TouchableOpacity style={styles.likesContainer} onPress={onLikePress}>
-                    <Fontisto name={'heart'} size={14} color={liked ? 'red' : 'gray'} />
-                    <Text style={styles.likesCount} >{likes.length + liked}</Text>
+                    <Fontisto name={'heart'} size={14} color={likes && likes[userId] ? 'red' : 'gray'} />
+                    <Text style={styles.likesCount} >{likes ? Object.values(likes).length : 0}</Text>
                 </TouchableOpacity>
             </View>
         </View>
     )
 }
 
-export default Reply;
+export default connect(mapStateToProps, mapDispatchToProps)(Reply);

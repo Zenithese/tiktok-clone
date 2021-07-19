@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './styles';
 import { Animated, View, Text, TextInput, TouchableOpacity, Pressable, Dimensions } from 'react-native';
 import Comment from '../Comment/index';
@@ -105,7 +105,7 @@ const BottomSheet = ({ bottomSheet, closeBottomSheet, comments, fetchComments })
                         </Animated.View>
                     }
                     data={comments}
-                    renderItem={({ item }) => <Comment body={item.body} comments={item.comments} username={item.username} likes={item.likes} key={item.id} />}
+                    renderItem={({ item }) => <Comment body={item.body} comments={item.comments} username={item.username} likes={item.likes} commentId={item.id} key={item.id} />}
                 />
             </View>
             <View style={styles.inputContainer}>

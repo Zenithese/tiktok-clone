@@ -3,16 +3,30 @@ import { View, Text, TouchableOpacity, Pressable } from 'react-native';
 import styles from './styles';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Reply from '../Reply/index';
+import { connect } from 'react-redux';
+import { createLike, deleteLike } from '../../actions/likes_actions';
 
-const Comment = ({ comments, body, username, likes }) => {
+const mapStateToProps = ({ session: { auth } }) => {
+    return {
+        userId: auth.id
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        createLike: (like) => dispatch(createLike(like)),
+        deleteLike: (id) => dispatch(deleteLike(id))
+    }
+}
+
+const Comment = ({ userId, commentId, createLike, deleteLike, comments, body, username, likes }) => {
 
     const [visible, setVisible] = useState(false)
-    const [liked, setLiked] = useState(false)
 
     const replies = ((flattenedReplies = []) => {
         (function flatten(comments, recipient) {
             comments.forEach(comment => {
-                flattenedReplies.push(<Reply body={comment.body} username={comment.username} recipient={recipient} likes={comment.likes} key={comment.id} />);
+                flattenedReplies.push(<Reply userId={userId} replyId={comment.id} body={comment.body} username={comment.username} recipient={recipient} likes={comment.likes} key={comment.id} />);
                 if (comment.comments.length) flatten(comment.comments, comment.username);
             })
         })(comments);
@@ -20,7 +34,12 @@ const Comment = ({ comments, body, username, likes }) => {
     })();
 
     const onLikePress = () => {
-        setLiked(!liked)
+        const like = {
+            likeable_type: "Comment",
+            likeable_id: commentId,
+            user_id: userId
+        }
+        likes && likes[userId] ? deleteLike(likes[userId].id) : createLike(like)
     }
 
     return (
@@ -51,8 +70,8 @@ const Comment = ({ comments, body, username, likes }) => {
                     </View>
 
                     <TouchableOpacity style={styles.likesContainer} onPress={onLikePress}>
-                        <Fontisto name={'heart'} size={14} color={liked ? 'red' : 'gray'} />
-                        <Text style={styles.likesCount} >{likes.length + liked}</Text>
+                        <Fontisto name={'heart'} size={14} color={likes && likes[userId] ? 'red' : 'gray'} />
+                        <Text style={styles.likesCount} >{likes ? Object.values(likes).length : 0}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -61,4 +80,4 @@ const Comment = ({ comments, body, username, likes }) => {
     )
 }
 
-export default Comment;
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);
