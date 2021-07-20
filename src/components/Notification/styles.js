@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         borderColor: '#fff',
     },
     actorNameAndActionContainer: {
-
+        marginLeft: 10,
     },
     actorName: {
         fontWeight: '400'

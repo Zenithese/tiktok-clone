@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image } from 'react-native';
 import styles from './styles'
 
-const Notification = () => {
+const Notification = ({ actor, action, notifiable }) => {
 
     return (
         <View style={styles.notificationContainer}>
@@ -15,8 +15,8 @@ const Notification = () => {
                 </View>
 
                 <View style={styles.actorNameAndActionContainer}>
-                    <Text style={styles.actorName}>Actor Name</Text>
-                    <Text style={styles.action}>Action taken</Text>
+                    <Text style={styles.actorName}>{actor}</Text>
+                    <Text style={styles.action}>{action} {notifiable.type}</Text>
                 </View>
             </View>
 

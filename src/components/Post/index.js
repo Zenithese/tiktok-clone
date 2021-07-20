@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { openBottomSheet, closeBottomSheet } from '../../actions/bottom_sheet_actions';
 import { setViewableComments } from '../../actions/viewable_comments_actions';
 import { createLike, deleteLike } from '../../actions/likes_actions';
+import { setCommentable } from '../../actions/commentable_actions';
 
 const mapStateToProps = ({ session: { auth }, ui }) => {
     return {
@@ -25,11 +26,12 @@ const mapDispatchToProps = dispatch => {
         closeBottomSheet: () => dispatch(closeBottomSheet()),
         setViewableComments: (comments) => dispatch(setViewableComments(comments)),
         createLike: (like) => dispatch(createLike(like)),
-        deleteLike: (id) => dispatch(deleteLike(id))
+        deleteLike: (id) => dispatch(deleteLike(id)),
+        setCommentable: (commentable) => dispatch(setCommentable(commentable))
     };
 };
 
-const Post = ({ createLike, deleteLike, userId, post, bottomSheet, openBottomSheet, closeBottomSheet, setViewableComments }) => {
+const Post = ({ setCommentable, createLike, deleteLike, userId, post, bottomSheet, openBottomSheet, closeBottomSheet, setViewableComments }) => {
 
     const [paused, setPaused] = useState(true)
 
@@ -55,6 +57,10 @@ const Post = ({ createLike, deleteLike, userId, post, bottomSheet, openBottomShe
             closeBottomSheet()
         } else {
             setViewableComments(post.comments)
+            setCommentable({
+                type: "Post",
+                id: post.id
+            })
             openBottomSheet()
         }
     }

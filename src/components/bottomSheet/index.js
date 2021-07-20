@@ -1,16 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './styles';
 import { Animated, View, Text, TextInput, TouchableOpacity, Pressable, Dimensions } from 'react-native';
 import Comment from '../Comment/index';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { connect } from 'react-redux';
 import { closeBottomSheet } from '../../actions/bottom_sheet_actions';
-import { fetchComments } from '../../actions/comments_actions';
+import { fetchComments, createComment } from '../../actions/comments_actions';
 
-const mapStateToProps = ({ ui }) => {
+const mapStateToProps = ({ ui, session: { auth } }) => {
     return {
         comments: ui.viewableComments,
-        bottomSheet: ui.bottomSheet
+        commentable: ui.commentable,
+        bottomSheet: ui.bottomSheet,
+        userId: auth.id
     }
 }
 
@@ -18,12 +20,13 @@ const mapDispatchToProps = dispatch => {
     return {
         closeBottomSheet: () => dispatch(closeBottomSheet()),
         fetchComments: () => dispatch(fetchComments()),
+        createComment: (comment) => dispatch(createComment(comment))
     }
 }
 
 const height = Dimensions.get('window').height
 
-const BottomSheet = ({ bottomSheet, closeBottomSheet, comments, fetchComments }) => {
+const BottomSheet = ({ userId, commentable, bottomSheet, closeBottomSheet, comments, fetchComments, createComment }) => {
 
     const scrollY = useRef(new Animated.Value(0)).current
     const scrollAnim = useRef(new Animated.Value(height)).current
@@ -33,6 +36,8 @@ const BottomSheet = ({ bottomSheet, closeBottomSheet, comments, fetchComments })
         outputRange: [0, 1000],
         extrapolate: 'clamp'
     })
+
+    const [body, setBody] = useState("")
 
     useEffect(() => {
         fetchComments()
@@ -55,6 +60,16 @@ const BottomSheet = ({ bottomSheet, closeBottomSheet, comments, fetchComments })
             duration: 400,
             useNativeDriver: true,
         }).start()
+    }
+
+    const onSubmit = () => {
+        const comment = {
+            commentable_type: commentable.type,
+            commentable_id: commentable.id,
+            body: body,
+            user_id: userId
+        }
+        createComment(comment)
     }
 
     return (
@@ -112,6 +127,8 @@ const BottomSheet = ({ bottomSheet, closeBottomSheet, comments, fetchComments })
                 <TextInput 
                     style={styles.input}
                     placeholder={'Add comment...'}
+                    onChangeText={(text) => setBody(text)}
+                    onSubmitEditing={onSubmit}
                 />
             </View>
         </Animated.View>

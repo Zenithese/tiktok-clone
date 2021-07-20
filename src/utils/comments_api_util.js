@@ -11,3 +11,10 @@ export const fetchComments = () => {
         }
     )
 };
+
+export const createComment = (comment) => {
+    return axios.post(
+        'http://localhost:3000/api/comments',
+        { comment }
+    )
+}

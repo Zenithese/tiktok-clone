@@ -5,7 +5,6 @@ export const RECEIVE_LIKES = "RECEIVE_LIKES"
 export const REMOVE_LIKE = "REMOVE_LIKE"
 
 export const RECEIVE_POST =  "RECEIVE_POST"
-export const DELETE_POST = "DELETE_POST"
 
 const receiveLike = (like) => {
     return {
@@ -31,13 +30,6 @@ const removeLike = (id) => {
 const receivePost = (post) => {
     return {
         type: RECEIVE_POST,
-        post
-    }
-}
-
-const deletePost = (post) => {
-    return {
-        type: DELETE_POST,
         post
     }
 }
