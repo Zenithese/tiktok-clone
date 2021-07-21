@@ -10,9 +10,10 @@ import TabView from '../../components/TabView/index';
 import { logoutCurrentUser, logout } from '../../actions/session_actions';
 import { connect } from 'react-redux';
 
-const mapStateToProps = ({ session: { auth } }) => {
+const mapStateToProps = ({ session: { auth }, entities: { users } }) => {
     return {
-        token: auth.token
+        token: auth.token,
+        currentUser: users[auth.id]
     }
 }
 
@@ -23,7 +24,7 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const Content = ({ token, logout, logoutCurrentUser }) => {
+const Content = ({ currentUser, token, logout, logoutCurrentUser }) => {
 
     const scrollY = useRef(new Animated.Value(0)).current
 
@@ -74,27 +75,29 @@ const Content = ({ token, logout, logoutCurrentUser }) => {
                                 style={styles.profileImage}
                                 source={{ uri: "https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg" }}
                             ></Image>
-                            <Text style={styles.username}>@username</Text>
+                            <Text style={styles.username}>@{currentUser.username}</Text>
                         </View>
 
                         <View style={styles.engagementContainer}>
                             <TouchableWithoutFeedback>
                                 <View style={styles.statContainer}>
-                                    <Text style={styles.statCount}>3451</Text>
+                                    <Text style={styles.statCount}>{currentUser.followings.length}</Text>
                                     <Text style={styles.statTitle}>Following</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                             <View style={styles.statDivider} />
                             <TouchableWithoutFeedback>
                                 <View style={styles.statContainer}>
-                                    <Text style={styles.statCount}>73452</Text>
+                                    <Text style={styles.statCount}>{currentUser.followers.length}</Text>
                                     <Text style={styles.statTitle}>Followers</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                             <View style={styles.statDivider} />
                             <TouchableWithoutFeedback>
                                 <View style={styles.statContainer}>
-                                    <Text style={styles.statCount}>8768</Text>
+                                    <Text style={styles.statCount}>{currentUser.posts.reduce((count, post) => {
+                                        return count + (post.likes ? Object.values(post.likes).length : 0)
+                                    }, 0)}</Text>
                                     <Text style={styles.statTitle}>Like</Text>
                                 </View>
                             </TouchableWithoutFeedback>

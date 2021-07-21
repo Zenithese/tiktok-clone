@@ -28,6 +28,7 @@ const height = Dimensions.get('window').height
 
 const BottomSheet = ({ userId, commentable, bottomSheet, closeBottomSheet, comments, fetchComments, createComment }) => {
 
+    const inputRef = useRef(null)
     const scrollY = useRef(new Animated.Value(0)).current
     const scrollAnim = useRef(new Animated.Value(height)).current
 
@@ -42,6 +43,12 @@ const BottomSheet = ({ userId, commentable, bottomSheet, closeBottomSheet, comme
     useEffect(() => {
         fetchComments()
     }, [])
+
+    useEffect(() => {
+        if (commentable.type !== "Post") {
+            inputRef.current.focus()
+        }
+    }, [commentable])
 
     useEffect(() => {
         if (bottomSheet) {
@@ -125,6 +132,7 @@ const BottomSheet = ({ userId, commentable, bottomSheet, closeBottomSheet, comme
             </View>
             <View style={styles.inputContainer}>
                 <TextInput 
+                    ref={ref => inputRef.current = ref}
                     style={styles.input}
                     placeholder={'Add comment...'}
                     onChangeText={(text) => setBody(text)}

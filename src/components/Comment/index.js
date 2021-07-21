@@ -5,21 +5,23 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Reply from '../Reply/index';
 import { connect } from 'react-redux';
 import { createLike, deleteLike } from '../../actions/likes_actions';
+import { setCommentable } from '../../actions/commentable_actions';
 
-const mapStateToProps = ({ session: { auth } }) => {
+const mapStateToProps = ({ session: { auth }, ui }) => {
     return {
-        userId: auth.id
+        userId: auth.id,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         createLike: (like) => dispatch(createLike(like)),
-        deleteLike: (id) => dispatch(deleteLike(id))
+        deleteLike: (id) => dispatch(deleteLike(id)),
+        setCommentable: (commentable) => dispatch(setCommentable(commentable))
     }
 }
 
-const Comment = ({ userId, commentId, createLike, deleteLike, comments, body, username, likes }) => {
+const Comment = ({ setCommentable, userId, commentId, createLike, deleteLike, comments, body, username, likes }) => {
 
     const [visible, setVisible] = useState(false)
 
@@ -32,6 +34,13 @@ const Comment = ({ userId, commentId, createLike, deleteLike, comments, body, us
         })(comments);
         return flattenedReplies;
     })();
+
+    const onReplyPress = () => {
+        setCommentable({
+            type: "Comment",
+            id: commentId
+        })
+    }
 
     const onLikePress = () => {
         const like = {
@@ -58,7 +67,7 @@ const Comment = ({ userId, commentId, createLike, deleteLike, comments, body, us
                         <View style={styles.commentContainer}>
                             <Text style={styles.comment}>{body}</Text>
                         </View>
-                        <Pressable onPress={() => console.warn('pressed')}>
+                        <Pressable onPress={onReplyPress}>
                             <Text style={styles.reply}>Reply</Text>
                         </Pressable>
                         {

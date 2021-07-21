@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, Pressable } from 'react-native';
 import styles from './styles';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { connect } from 'react-redux';
 import { createLike, deleteLike } from '../../actions/likes_actions';
+import { setCommentable } from '../../actions/commentable_actions';
 
 const mapStateToProps = ({ session: { auth } }) => {
     return {
@@ -14,11 +15,19 @@ const mapStateToProps = ({ session: { auth } }) => {
 const mapDispatchToProps = dispatch => {
     return {
         createLike: (like) => dispatch(createLike(like)),
-        deleteLike: (id) => dispatch(deleteLike(id))
+        deleteLike: (id) => dispatch(deleteLike(id)),
+        setCommentable: (commentable) => dispatch(setCommentable(commentable))
     }
 }
 
-const Reply = ({ userId, replyId, createLike, deleteLike, body, username, recipient, likes }) => {
+const Reply = ({ setCommentable, userId, replyId, createLike, deleteLike, body, username, recipient, likes }) => {
+
+    const onReplyPress = () => {
+        setCommentable({
+            type: "Comment",
+            id: replyId
+        })
+    }
 
     const onLikePress = () => {
         const like = {
@@ -53,7 +62,7 @@ const Reply = ({ userId, replyId, createLike, deleteLike, body, username, recipi
                     <View style={styles.commentContainer}>
                         <Text style={styles.comment}>{body}</Text>
                     </View>
-                    <Pressable onPress={() => console.warn('pressed')}>
+                    <Pressable onPress={onReplyPress}>
                         <Text style={styles.reply}>Reply</Text>
                     </Pressable>
                 </View>
