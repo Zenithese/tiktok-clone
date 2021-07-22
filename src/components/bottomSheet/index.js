@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './styles';
-import { Animated, View, Text, TextInput, TouchableOpacity, Pressable, Dimensions } from 'react-native';
+import { Animated, View, Text, TextInput, TouchableOpacity, Pressable, Dimensions, KeyboardAvoidingView, Keyboard } from 'react-native';
 import Comment from '../Comment/index';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { connect } from 'react-redux';
@@ -61,6 +61,7 @@ const BottomSheet = ({ userId, commentable, bottomSheet, closeBottomSheet, comme
     }, [bottomSheet])
 
     const onClosePress = () => {
+        Keyboard.dismiss();
         closeBottomSheet();
         Animated.timing(scrollAnim, {
             toValue: height,
@@ -77,6 +78,7 @@ const BottomSheet = ({ userId, commentable, bottomSheet, closeBottomSheet, comme
             user_id: userId
         }
         createComment(comment)
+        inputRef.current.clear()
     }
 
     return (
@@ -130,15 +132,17 @@ const BottomSheet = ({ userId, commentable, bottomSheet, closeBottomSheet, comme
                     renderItem={({ item }) => <Comment body={item.body} comments={item.comments} username={item.username} likes={item.likes} commentId={item.id} key={item.id} />}
                 />
             </View>
-            <View style={styles.inputContainer}>
-                <TextInput 
-                    ref={ref => inputRef.current = ref}
-                    style={styles.input}
-                    placeholder={'Add comment...'}
-                    onChangeText={(text) => setBody(text)}
-                    onSubmitEditing={onSubmit}
-                />
-            </View>
+            <KeyboardAvoidingView behavior={'position'}>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        ref={ref => inputRef.current = ref}
+                        style={styles.input}
+                        placeholder={'Add comment...'}
+                        onChangeText={(text) => setBody(text)}
+                        onSubmitEditing={onSubmit}
+                    />
+                </View>
+            </KeyboardAvoidingView>
         </Animated.View>
     )
 }
