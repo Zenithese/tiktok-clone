@@ -51,7 +51,7 @@ const BottomSheet = ({ userId, commentable, bottomSheet, closeBottomSheet, comme
     }, [commentable])
 
     useEffect(() => {
-        if (bottomSheet) {
+        if (bottomSheet === 'comments') {
             Animated.timing(scrollAnim, {
                 toValue: 0,
                 duration: 400,

@@ -1,12 +1,10 @@
 import React from 'react';
-import { Image, Text } from 'react-native';
+import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../screens/Home/index';
 import Profile from '../screens/Profile/index';
 import Discover from '../screens/Discover/index';
 import Inbox from '../screens/Inbox/index';
-import Example from '../components/Example/Example'
-
 
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -25,8 +23,12 @@ const BottomNavigation = () => {
             tabBarOptions={{
                 tabStyle: {
                     backgroundColor: 'black',
+                    paddingBottom: 30,
                 },
                 activeTintColor: '#fff',
+                style: {
+                    height: 80
+                }
             }}
         >
             <Tab.Screen
@@ -36,6 +38,9 @@ const BottomNavigation = () => {
                     tabBarIcon: ({ color }) => (
                         <Entypo name={'home'} size={25} color={color} />
                     ),
+                    style: {
+                        paddingBottom: 30
+                    }
                 }}
             />
             <Tab.Screen

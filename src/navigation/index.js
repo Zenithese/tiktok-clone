@@ -3,9 +3,8 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
 import configureStore from '../store/store';
-import BottomSheet from '../components/bottomSheet';
+import BottomSheets from './bottomSheets';
 import Greeting from './greeting';
-import { logout } from '../actions/session_actions';
 
 const { store, persistor } = configureStore();
 
@@ -17,7 +16,7 @@ export default function Navigation() {
                 <NavigationContainer>
                     <Greeting />
                 </NavigationContainer>
-                <BottomSheet />
+                <BottomSheets />
             </PersistGate>
         </Provider> 
     )

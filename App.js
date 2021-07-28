@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
     backgroundColor: 'black',
-    paddingBottom: 30
+    // paddingBottom: 30
   },
 });
 

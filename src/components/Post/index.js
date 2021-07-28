@@ -22,7 +22,7 @@ const mapStateToProps = ({ session: { auth }, ui }) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        openBottomSheet: () => dispatch(openBottomSheet()),
+        openBottomSheet: (sheet) => dispatch(openBottomSheet(sheet)),
         closeBottomSheet: () => dispatch(closeBottomSheet()),
         setViewableComments: (comments) => dispatch(setViewableComments(comments)),
         createLike: (like) => dispatch(createLike(like)),
@@ -53,7 +53,7 @@ const Post = ({ setCommentable, createLike, deleteLike, userId, post, bottomShee
     }
 
     const onCommentPress = () => {
-        if (bottomSheet) {
+        if (bottomSheet === 'comments') {
             closeBottomSheet()
         } else {
             setViewableComments(post.comments)
@@ -61,7 +61,7 @@ const Post = ({ setCommentable, createLike, deleteLike, userId, post, bottomShee
                 type: "Post",
                 id: post.id
             })
-            openBottomSheet()
+            openBottomSheet('comments')
         }
     }
 

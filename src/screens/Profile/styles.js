@@ -104,6 +104,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: 13,
     },
+    modalBackground: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'black',
+        zIndex: 1,
+    },
 });
 
 export default styles;

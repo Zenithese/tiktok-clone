@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './styles';
-import { View, Text, Image, TouchableWithoutFeedback, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, Image, TouchableWithoutFeedback, TouchableOpacity, Animated, Pressable } from 'react-native';
 import { Header } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -8,12 +8,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import TabView from '../../components/TabView/index';
 import { logoutCurrentUser, logout } from '../../actions/session_actions';
+import { openBottomSheet, closeBottomSheet } from '../../actions/bottom_sheet_actions';
 import { connect } from 'react-redux';
+import { transform } from '@babel/core';
 
-const mapStateToProps = ({ session: { auth }, entities: { users } }) => {
+const mapStateToProps = ({ session: { auth }, entities: { users }, ui }) => {
     return {
         token: auth.token,
-        currentUser: users[auth.id]
+        currentUser: users[auth.id],
+        bottomSheet: ui.bottomSheet
     }
 }
 
@@ -21,18 +24,51 @@ const mapDispatchToProps = dispatch => {
     return {
         logoutCurrentUser: () => dispatch(logoutCurrentUser()),
         logout: (token) => dispatch(logout(token)),
+        openBottomSheet: (sheet) => dispatch(openBottomSheet(sheet)),
+        closeBottomSheet: () => dispatch(closeBottomSheet()),
     }
 }
 
-const Content = ({ currentUser, token, logout, logoutCurrentUser }) => {
+const Content = ({ currentUser, token, logout, logoutCurrentUser, openBottomSheet, closeBottomSheet, bottomSheet }) => {
 
     const scrollY = useRef(new Animated.Value(0)).current
+    const opacityAnim = useRef(new Animated.Value(0)).current
 
     const profileRef = useRef()
     const posRef = useRef()
 
+    const onProfilePhotoPress = () => {
+        if (bottomSheet === 'uploadPhoto') {
+            closeBottomSheet()
+        } else {
+            openBottomSheet('uploadPhoto')
+        }
+    }
+
+    useEffect(() => {
+        if (bottomSheet === 'uploadPhoto') {
+            Animated.timing(opacityAnim, {
+                toValue: 0.4,
+                duration: 400,
+                useNativeDriver: true,
+            }).start()
+        } else {
+            Animated.timing(opacityAnim, {
+                toValue: 0,
+                duration: 400,
+                useNativeDriver: true,
+            }).start()
+        }
+    }, [bottomSheet])
+
     return (
         <View style={styles.container}>
+            {bottomSheet === 'uploadPhoto' && <Animated.View style={[
+                styles.modalBackground,
+                {
+                    opacity: opacityAnim,
+                }
+            ]}/>}
             <Animated.View
                 style={styles.headerContainer}
             >
@@ -70,13 +106,13 @@ const Content = ({ currentUser, token, logout, logoutCurrentUser }) => {
             >
                 <View style={styles.topHalfContainer}>
                     <View style={styles.topHalf}>
-                        <View style={styles.profileImageAndUsernameContainer}>
+                        <Pressable style={styles.profileImageAndUsernameContainer} onPress={onProfilePhotoPress}>
                             <Image
                                 style={styles.profileImage}
                                 source={{ uri: "https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg" }}
                             ></Image>
                             <Text style={styles.username}>@{currentUser.username}</Text>
-                        </View>
+                        </Pressable>
 
                         <View style={styles.engagementContainer}>
                             <TouchableWithoutFeedback>
