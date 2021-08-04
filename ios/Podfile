@@ -14,6 +14,7 @@ target 'tiktok_clone' do
 
   pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
 
+
   target 'tiktok_cloneTests' do
     inherit! :complete
     # Pods for testing

@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './styles';
-import { Animated, View, Pressable, Dimensions, Image, Text } from 'react-native';
+import { Animated, View, Pressable, Dimensions, Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { closeBottomSheet } from '../../actions/bottom_sheet_actions';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { updateUser } from '../../actions/users_actions';
+
+const ImagePicker = require('react-native-image-picker');
 
 const mapStateToProps = ({ ui, session: { auth }, entities: { users } }) => {
     return {
@@ -16,16 +19,15 @@ const mapStateToProps = ({ ui, session: { auth }, entities: { users } }) => {
 const mapDispatchToProps = dispatch => {
     return {
         closeBottomSheet: () => dispatch(closeBottomSheet()),
+        updateUser: (user) => dispatch(updateUser(user)),
     }
 }
 
 const height = Dimensions.get('window').height
 
-const UploadPhotoSheet = ({ currentUser, bottomSheet, closeBottomSheet }) => {
+const UploadPhotoSheet = ({ currentUser, bottomSheet, closeBottomSheet, updateUser }) => {
 
     const scrollAnim = useRef(new Animated.Value(height)).current
-
-    const [photoFile, setPhotoFile] = useState(null)
 
     useEffect(() => {
         if (bottomSheet === 'uploadPhoto') {
@@ -47,11 +49,33 @@ const UploadPhotoSheet = ({ currentUser, bottomSheet, closeBottomSheet }) => {
     }
 
     const onSubmit = () => {
-        const formData = new FormData();
-        if (photoFile) {
-            formData.append('user[profile_photo]', photoFile);
-            updateUser(formData);
-        }
+        let options = {
+            title: 'You can choose one image',
+            maxWidth: 256,
+            maxHeight: 256,
+            mediaType: 'photo',
+            includeBase64: true
+        };
+
+        ImagePicker.launchImageLibrary(options, response => {
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const photo = {
+                    uri: response.assets[0].uri,
+                    name: response.assets[0].fileName,
+                    type: response.assets[0].type,
+                    base64: response.assets[0].base64,
+                    id: currentUser.id,
+                    token: currentUser.session_token
+                }
+                updateUser(photo);
+            }
+        });
     }
 
     return (
@@ -83,6 +107,25 @@ const UploadPhotoSheet = ({ currentUser, bottomSheet, closeBottomSheet }) => {
                         </View>
                     </View>
                 </Pressable>
+                {/* <CameraRollPicker 
+                    callback={() => console.log('picked')}
+                    groupTypes="All"
+                /> */}
+                {/* <ScrollView>
+                    {photos.map((p, i) => {
+                        return (
+                            <Image
+                                key={i}
+                                style={{
+                                    width: 300,
+                                    height: 100,
+                                }}
+                                source={{ uri: p.node.image.uri }}
+                            />
+                        );
+                    })}
+                </ScrollView> */}
+
             </View>
         </Animated.View>
     )
