@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, Dimensions, TextInput, FlatList, SafeAreaView, Animated, ActivityIndicator } from 'react-native';
 import { Header, SearchBar } from 'react-native-elements';
+// import styles from '../../screens/Inbox/styles';
 import Category from '../Category/index';
+import styles from './styles';
 
 const [width, height] = [Dimensions.get('window').width, Dimensions.get('window').height]
 
@@ -24,7 +26,7 @@ const SearchComponent = () => {
     };
 
     return (
-        <View>
+        <View style={styles.container}>
             <Animated.FlatList
                 ListHeaderComponentStyle={{ zIndex: 10 }}
                 ListHeaderComponent={

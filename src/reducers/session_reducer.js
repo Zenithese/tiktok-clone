@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
 import auth from './auth_reducer';
 import security from './security_reducer';
-import AsyncStorage from '@react-native-community/async-storage'
+// import AsyncStorage from '@react-native-community/async-storage'
+import { AsyncStorage } from "react-native";
 import { persistReducer } from 'redux-persist';
 
 const persistConfig = {

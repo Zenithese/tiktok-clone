@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image } from 'react-native';
 import styles from './styles'
 
-const Notification = ({ actor, action, notifiable }) => {
+const Notification = ({ actor, action, notifiable, actorImageUri }) => {
 
     return (
         <View style={styles.notificationContainer}>
@@ -10,7 +10,7 @@ const Notification = ({ actor, action, notifiable }) => {
                 <View style={styles.actorImageContainer}>
                     <Image
                         style={styles.actorImage}
-                        source={{ uri: "https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg" }}
+                        source={{ uri: actorImageUri }}
                     ></Image>
                 </View>
 

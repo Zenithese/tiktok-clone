@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styles from './styles';
-import { View, FlatList, Dimensions } from 'react-native';
+import { View, FlatList, Dimensions, SafeAreaView } from 'react-native';
 import Notification from '../../components/Notification';
 import { connect } from 'react-redux';
 import { fetchNotifications } from '../../actions/notifications_actions';
@@ -29,11 +29,11 @@ const Content = ({ userId, notifications, fetchNotifications }) => {
     }, [])
 
     return (
-        <View>
+        <View style={styles.container}>
             <FlatList
                 style={{ width: width }}
                 data={notifications}
-                renderItem={({ item }) => <Notification actor={item.actor} action={item.action} notifiable={item.notifiable} />}
+                renderItem={({ item }) => <Notification actor={item.actor} actorImageUri={item.actor_image_uri} action={item.action} notifiable={item.notifiable} />}
                 // keyExtractor={(item) => item.key}
                 showsVerticalScrollIndicator={false}
                 bounces={false}

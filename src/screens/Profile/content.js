@@ -109,7 +109,7 @@ const Content = ({ currentUser, token, logout, logoutCurrentUser, openBottomShee
                         <Pressable style={styles.profileImageAndUsernameContainer} onPress={onProfilePhotoPress}>
                             <Image
                                 style={styles.profileImage}
-                                source={{ uri: "https://thepowerofthedream.org/wp-content/uploads/2015/09/generic-profile-picture.jpg" }}
+                                source={{ uri: currentUser.image_uri }}
                             ></Image>
                             <Text style={styles.username}>@{currentUser.username}</Text>
                         </Pressable>

@@ -12,11 +12,12 @@ import { setViewableComments } from '../../actions/viewable_comments_actions';
 import { createLike, deleteLike } from '../../actions/likes_actions';
 import { setCommentable } from '../../actions/commentable_actions';
 
-const mapStateToProps = ({ session: { auth }, ui }) => {
+const mapStateToProps = ({ session: { auth }, ui, entities: { users } }) => {
     return {
         userId: auth.id,
         bottomSheet: ui.bottomSheet,
         viewableComments: ui.viewableComments,
+        currentUser: users[auth.id]
     }
 }
 
@@ -31,7 +32,7 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-const Post = ({ setCommentable, createLike, deleteLike, userId, post, bottomSheet, openBottomSheet, closeBottomSheet, setViewableComments }) => {
+const Post = ({ currentUser, setCommentable, createLike, deleteLike, userId, post, bottomSheet, openBottomSheet, closeBottomSheet, setViewableComments }) => {
 
     const [paused, setPaused] = useState(true)
 
@@ -86,7 +87,7 @@ const Post = ({ setCommentable, createLike, deleteLike, userId, post, bottomShee
                             <View style={styles.profileImageContainer}>
                                 <Image 
                                     style={styles.profileImage} 
-                                    source={{ uri: post.user.image_uri }} >
+                                    source={{ uri: post.user.username === currentUser.username ? currentUser.image_uri : post.user.image_uri }} >
                                 </Image>
                             </View>
                             <TouchableOpacity style={styles.likesContainer} onPress={onLikePress}>

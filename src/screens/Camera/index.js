@@ -13,11 +13,12 @@ const Camera = () => {
     const navigation = useNavigation();
 
     const onRecord = async () => {
-        console.warn("camera")
         if (isRecording) {
             camera.current.stopRecording();
         } else {
-            const data = await camera.current.recordAsync();
+            const options = { base64: true }
+            const data = await camera.current.recordAsync(options);
+            console.warn(data)
             // navigation.navigate('CreatePost', { videoUri: data.uri });
 
         }
@@ -32,7 +33,8 @@ const Camera = () => {
                 style={styles.preview}
             />
             <TouchableOpacity
-                onPress={onRecord}
+                onPressIn={onRecord}
+                onPressOut={onRecord}
                 style={
                     isRecording ? styles.stop : styles.record
                 }
