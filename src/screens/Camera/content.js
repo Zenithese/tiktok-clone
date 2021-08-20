@@ -10,20 +10,17 @@ const Content = () => {
 
     const [isRecording, setIsRecording] = useState(false);
 
-    // const navigation = useNavigation();
+    const navigation = useNavigation();
 
     const onRecord = async () => {
         if (isRecording) {
-            console.warn('stopping')
             camera.current.stopRecording();
         } else {
-            // console.warn('starting')
             const options = { base64: true }
             console.log(camera)
             const data = await camera.current.recordAsync(options);
             console.warn(data)
-            // navigation.navigate('CreatePost', { videoUri: data.uri });
-
+            navigation.navigate('CreatePost', { videoUri: data.uri });
         }
     };
 
