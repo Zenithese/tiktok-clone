@@ -4,7 +4,8 @@ const styles = StyleSheet.create({
   list: {
     width: '100%',
     height: Dimensions.get('window').height,
-    // paddingTop: StatusBar.currentHeight
+    // paddingTop: StatusBar.currentHeight,
+
   }
 });
 

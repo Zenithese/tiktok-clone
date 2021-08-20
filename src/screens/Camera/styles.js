@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+    indexContainer: {
+        flex: 1,
+        flexDirection: 'column',
+    },
     container: {
         flex: 1,
         flexDirection: 'column',

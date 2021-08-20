@@ -37,6 +37,7 @@ const Greeting = ({ id, currentUser, secure, token, validateToken }) => {
     }, [])
 
     return currentUser && secure ? <App /> : <Auth />;
+    // return <App />
 };
 
 export default connect(
