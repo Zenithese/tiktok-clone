@@ -3,6 +3,20 @@ import { SafeAreaView, View, TextInput, TouchableOpacity, Text, KeyboardAvoiding
 import styles from './styles';
 import Video from 'react-native-video';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { connect } from 'react-redux';
+import { createPost } from '../../actions/posts_actions';
+
+const mapStateToProps = () => {
+    return {
+        
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        createPost: (post) => dispatch(createPost(post)),
+    }
+}
 
 const Content = () => {
 
@@ -11,6 +25,8 @@ const Content = () => {
     const route = useRoute();
 
     const onPublish = () => {
+        const formData = new FormData();
+        formData.append('video', route.params.videoUri);
         console.warn('would publish')
     }
 
@@ -44,4 +60,4 @@ const Content = () => {
     )
 }
 
-export default Content;
+export default connect(mapStateToProps, mapDispatchToProps)(Content);

@@ -16,3 +16,10 @@ export const fetchPosts = () => {
     //     }
     // )
 };
+
+export const createPost = (post) => {
+    return axios.post(
+        `http://${localhost}:3000/api/posts`,
+        { post }
+    )
+};
