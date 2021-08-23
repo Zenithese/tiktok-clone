@@ -19,7 +19,6 @@ const Content = () => {
             const options = { base64: true }
             console.log(camera)
             const data = await camera.current.recordAsync(options);
-            console.warn(data)
             navigation.navigate('CreatePost', { videoUri: data.uri });
         }
     };

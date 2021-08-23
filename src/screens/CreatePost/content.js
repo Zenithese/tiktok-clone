@@ -5,10 +5,11 @@ import Video from 'react-native-video';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { createPost } from '../../actions/posts_actions';
+import RNFS from 'react-native-fs';
 
-const mapStateToProps = () => {
+const mapStateToProps = ({ session: { auth } }) => {
     return {
-        
+        userId: auth.id,
     }
 }
 
@@ -18,16 +19,38 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const Content = () => {
+const Content = ({ createPost, userId }) => {
 
     const [description, setDescription] = useState('');
 
     const route = useRoute();
 
     const onPublish = () => {
-        const formData = new FormData();
-        formData.append('video', route.params.videoUri);
-        console.warn('would publish')
+        // const formData = new FormData();
+        // formData.append('video', route.params.videoUri);
+        (async function () {
+            // const response = await fetch(route.params.videoUri);
+            // const blob = await response.blob();
+            // const post = {
+            //     blob,
+            //     description: 'new post',
+            //     user_id: userId,
+            //     video_uri: "null"
+            // }
+            // console.warn(response.readFile("base64"))
+            // createPost(post)
+
+            RNFS.readFile(route.params.videoUri, 'base64')
+                .then(res => {
+                    const post = {
+                        base64: res,
+                        description: 'new post',
+                        user_id: userId,
+                        video_uri: "null"
+                    }
+                    createPost(post)
+                });
+        })()
     }
 
     return (
