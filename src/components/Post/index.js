@@ -34,7 +34,7 @@ const mapDispatchToProps = dispatch => {
 
 const Post = ({ currentUser, setCommentable, createLike, deleteLike, userId, post, bottomSheet, openBottomSheet, closeBottomSheet, setViewableComments }) => {
 
-    const [paused, setPaused] = useState(true)
+    const [paused, setPaused] = useState(false)
 
     const onPress = () => {
         setPaused(!paused);

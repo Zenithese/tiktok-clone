@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingView, Keyboard } from 'react-native';
 import styles from './styles';
 import Video from 'react-native-video';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { createPost } from '../../actions/posts_actions';
 import RNFS from 'react-native-fs';
+import RNThumbnail from 'react-native-thumbnail';
 
 const mapStateToProps = ({ session: { auth } }) => {
     return {
@@ -26,29 +27,24 @@ const Content = ({ createPost, userId }) => {
     const route = useRoute();
 
     const onPublish = () => {
-        // const formData = new FormData();
-        // formData.append('video', route.params.videoUri);
         (async function () {
-            // const response = await fetch(route.params.videoUri);
-            // const blob = await response.blob();
-            // const post = {
-            //     blob,
-            //     description: 'new post',
-            //     user_id: userId,
-            //     video_uri: "null"
-            // }
-            // console.warn(response.readFile("base64"))
-            // createPost(post)
+            const post = {
+                description: description,
+                user_id: userId,
+                video_uri: "null",
+            }
 
             RNFS.readFile(route.params.videoUri, 'base64')
                 .then(res => {
-                    const post = {
-                        base64: res,
-                        description: 'new post',
-                        user_id: userId,
-                        video_uri: "null"
-                    }
-                    createPost(post)
+                    post["base64"] = res
+                    RNThumbnail.get(route.params.videoUri)
+                        .then((result) => {
+                            RNFS.readFile(result.path, 'base64')
+                                .then(res => {
+                                    post["thumbnail"] = res
+                                    createPost(post)
+                                })
+                        })
                 });
         })()
     }
