@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, Image, View, Dimensions, Animated, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Animated, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 // import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const formatData = (data, numColumns) => {
@@ -44,17 +44,7 @@ export default function TabContent({ setMomentum, momentum, translateY, viewable
                 }}
                 style={[styles.item, { backgroundColor: backgroundColor }]}
             >
-                {
-                    item.thumbnail ? 
-                        <Image
-                            style={styles.thumbnail} 
-                            source={{
-                                uri: item.thumbnail
-                            }}
-                        />
-                        :
-                        <Text style={styles.itemText}>{item.id}</Text>
-                }
+                <Text style={styles.itemText}>{item.key}</Text>
             </TouchableOpacity>
         );
     };
@@ -111,10 +101,6 @@ const styles = StyleSheet.create({
     itemText: {
         color: '#fff',
     },
-    thumbnail: {
-        width: '100%',
-        flex: 1,
-    }
 });
 
     // useEffect(() => {

@@ -4,21 +4,10 @@ import { View, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, Dim
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import TabContent from './TabContent';
+import TabContent2 from './TabContent2';
+import TabContent3 from './TabContent3';
 import { data } from './data';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import { connect } from 'react-redux';
-
-const mapStateToProps = ({ entities: { posts } }) => {
-    return {
-        posts: Object.values(posts)
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-
-    }
-}
 
 const [width, height] = [Dimensions.get('window').width, Dimensions.get('window').height]
 
@@ -28,24 +17,21 @@ const tabs = [
         body: <FontAwesome5 name={'grip-vertical'} size={15} color='black' />,
         ref: createRef(),
         color: 'red',
-        index: 0,
-        section: "videos"
+        index: 0
     },
     {
         key: 'tab2',
         body: <Feather name={'heart'} size={15} color='black' />,
         ref: createRef(),
         color: 'blue',
-        index: 1,
-        section: "likes"
+        index: 1
     },
     {
         key: 'tab3',
         body: <Feather name={'lock'} size={15} color='black' />,
         ref: createRef(),
         color: 'green',
-        index: 2,
-        section: "private"
+        index: 2
     },
 ]
 
@@ -135,7 +121,7 @@ const Tabs = ({ setNewScroll, setViewableIndex, tabs, scrollX, flatListRef }) =>
     )
 }
 
-const TabView = ({ scrollY, topHeight, profileRef, posRef, posts }) => {
+const TabView = ({ scrollY, topHeight, profileRef, posRef }) => {
     const scrollX = useRef(new Animated.Value(0)).current 
 
     const [newScroll, setNewScroll] = useState(false)
@@ -150,8 +136,8 @@ const TabView = ({ scrollY, topHeight, profileRef, posRef, posts }) => {
     const flatListRef = useRef()
 
     const translateY = scrollY.interpolate({
-        inputRange: [topHeight, Math.ceil(posts.length / 3) * 170],
-        outputRange: [0, Math.ceil(posts.length / 3) * 170 - topHeight],
+        inputRange: [topHeight, Math.ceil(data.length / 3) * 170],
+        outputRange: [0, Math.ceil(data.length / 3) * 170 - topHeight],
         extrapolate: 'clamp'
     })
 
@@ -174,8 +160,7 @@ const TabView = ({ scrollY, topHeight, profileRef, posRef, posts }) => {
                 keyExtractor={(item) => item.key}
                 renderItem={({ item }) => {
                     return (
-                        <TabContent setMomentum={setMomentum} momentum={momentum} translateY={translateY} posRef={posRef} profileRef={profileRef} viewableIndex={viewableIndex} item={item} newScroll={newScroll} viewableItems={viewableItems} inputRange={inputRange} scrollX={scrollX} 
-                        data={posts} backgroundColor={item.color} scrollY={scrollY} topHeight={topHeight} />
+                        <TabContent setMomentum={setMomentum} momentum={momentum} translateY={translateY} posRef={posRef} profileRef={profileRef} viewableIndex={viewableIndex} item={item} newScroll={newScroll} viewableItems={viewableItems} inputRange={inputRange} scrollX={scrollX} data={data} backgroundColor={item.color} scrollY={scrollY} topHeight={topHeight} />
                     )
                 }}
                 showsHorizontalScrollIndicator={false}
@@ -204,4 +189,4 @@ const TabView = ({ scrollY, topHeight, profileRef, posRef, posts }) => {
     )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabView);;
+export default TabView;
