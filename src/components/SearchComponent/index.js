@@ -1,13 +1,31 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Dimensions, TextInput, FlatList, SafeAreaView, Animated, ActivityIndicator } from 'react-native';
 import { Header, SearchBar } from 'react-native-elements';
 // import styles from '../../screens/Inbox/styles';
 import Category from '../Category/index';
 import styles from './styles';
+import { connect } from 'react-redux';
+import { fetchHashtags } from '../../actions/hashtags_actions';
+
+const mapStateToProps = ({ entities }) => {
+    return {
+        hashtags: Object.entries(entities.hashtags)
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchHashtags: () => dispatch(fetchHashtags()),
+    };
+};
 
 const [width, height] = [Dimensions.get('window').width, Dimensions.get('window').height]
 
-const SearchComponent = () => {
+const SearchComponent = ({ fetchHashtags, hashtags }) => {
+
+    useEffect(() => {
+        fetchHashtags()
+    }, [])
 
     const [query, setQuery] = useState('')
     const [data, setData] = useState(new Array(5).fill(0).map(_ => new Object))
@@ -47,8 +65,8 @@ const SearchComponent = () => {
                     </Animated.View>
                 }
                 style={{ width: width }}
-                data={data}
-                renderItem={({ item }) => <Category />}
+                data={hashtags}
+                renderItem={({ item }) => <Category name={item[0]} posts={item[1].posts} key={item[1].id} />}
                 // keyExtractor={(item) => item.key}
                 showsVerticalScrollIndicator={false}
                 bounces={false}
@@ -57,9 +75,9 @@ const SearchComponent = () => {
                     { useNativeDriver: true }
                 )}
                 onEndReached={() => {
-                    console.log('reached')
-                    const newData = [...data, ...new Array(5).fill(0).map(_ => new Object) ]
-                    setData(newData)
+                    // console.log('reached')
+                    // const newData = [...data, ...new Array(5).fill(0).map(_ => new Object) ]
+                    // setData(newData)
                 }}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={
@@ -72,4 +90,4 @@ const SearchComponent = () => {
     )
 }
 
-export default SearchComponent;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchComponent);

@@ -6,7 +6,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const [width, height] = [Dimensions.get('window').width, Dimensions.get('window').height]
 
-const Category = () => {
+const Category = ({ name, posts }) => {
 
     const renderItem = ({ item, index }) => {
         if (index === 0) {
@@ -15,7 +15,7 @@ const Category = () => {
                     onPress={(event) => console.log(event.nativeEvent)}
                     style={[styles.item, { backgroundColor: 'red', marginLeft: 15 }]}
                 >
-                    <Text style={styles.itemText}>{item.key}</Text>
+                    <Text style={styles.itemText}>{item.id}</Text>
                 </View>
             );
         }
@@ -40,7 +40,7 @@ const Category = () => {
                     </View>
 
                     <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Hashtag Title</Text>
+                        <Text style={styles.title}>{name}</Text>
                         <Text style={styles.trendingType}>Trending Hashtag</Text>
                     </View>
                 </View>
@@ -53,7 +53,7 @@ const Category = () => {
             <FlatList
                 style={styles.flatListStyle}
                 horizontal
-                data={data}
+                data={posts}
                 renderItem={renderItem}
                 bounces={false}
                 showsHorizontalScrollIndicator={false}
